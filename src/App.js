@@ -2,6 +2,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
 import Mainui from "./components/Mainui.jsx";
+import Forgetpassword from "./pages/Forgetpassword";
 import Login from "./pages/Login";
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
         <BrowserRouter>
           <Routes>
               <Route path="/" element={<Login />}></Route>
+              <Route path="/forgetpassword" element={<Forgetpassword />}></Route>
               <Route path="/admin" element={<Mainui />}></Route>
           </Routes>
         </BrowserRouter>
