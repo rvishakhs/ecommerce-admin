@@ -22,11 +22,16 @@ function Login() {
                             <div className='flex gap-2 py-1'>
                                 <input type="checkbox"  />  
                                 <p className='font-normal text-sm'>Remeber Me</p>  
-                                
+
                             </div>
                             <Link to="/forgetpassword" className='tracking-wide font-medium text-sm'>Forget Password?</Link>
                         </div>
-                            <button className='bg-yellow-400 py-2 font-medium text-base tracking-wide mt-2 mx-2 rounded-md hover:!border-black'>Sign In</button>
+                            <div className='w-full'> 
+                                <Link to="/admin" >
+                                    <button className='bg-yellow-400 w-full py-2  font-medium text-base tracking-wide mt-2 mx-2 rounded-md hover:!border-black'>Sign In</button>
+                                </Link>
+                            </div>
+                        
                         <div>
                             <Divider plain>Or Continue with</Divider>
                             <div className='flex gap-2 flex-row justify-around py-2'>
