@@ -1,15 +1,15 @@
-import { FileOutlined, PieChartOutlined, UserOutlined } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
-import { useState } from 'react';
-const { Header, Content, Footer, Sider } = Layout;
-function getItem(label, key, icon, children) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  };
-}
+import {
+  DashboardOutlined ,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  UploadOutlined,
+  UserOutlined,
+  VideoCameraOutlined,
+} from '@ant-design/icons';
+import { Layout, Menu, theme } from 'antd';
+import React, { useState } from 'react';
+const { Header, Sider, Content } = Layout;
+
 
 const Mainui = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -17,20 +17,33 @@ const Mainui = () => {
     token: { colorBgContainer },
   } = theme.useToken();
   return (
-    <Layout
-      style={{
-        minHeight: '100vh',
-      }}
-    >
-      <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-        <div
-          style={{
-            height: 32,
-            margin: 16,
-            background: 'rgba(255, 255, 255, 0.2)',
-          }}
+    <Layout className='h-screen'>
+      <Sider trigger={null} collapsible collapsed={collapsed}>
+        <div className="logo py-2" />
+        <p></p>
+        <Menu
+          theme="dark"
+          mode="inline"
+          defaultSelectedKeys={['1']}
+          items={[
+            {
+              key: '1',
+              icon: <DashboardOutlined />,
+              label: 'Dashboard',
+            },
+            {
+              key: '1',
+              icon: <DashboardOutlined />,
+              label: 'Customers',
+            },
+            {
+              key: '1',
+              icon: <DashboardOutlined />,
+              label: 'Dashboard',
+            },
+           
+          ]}
         />
-        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline"  />
       </Sider>
       <Layout className="site-layout">
         <Header
@@ -38,38 +51,23 @@ const Mainui = () => {
             padding: 0,
             background: colorBgContainer,
           }}
-        />
+          className="px-2"
+        >
+          {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+            className: 'trigger',
+            onClick: () => setCollapsed(!collapsed),
+          })}
+        </Header>
         <Content
           style={{
-            margin: '0 16px',
+            margin: '24px 16px',
+            padding: 24,
+            minHeight: 280,
+            background: colorBgContainer,
           }}
         >
-          <Breadcrumb
-            style={{
-              margin: '16px 0',
-            }}
-          >
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-          </Breadcrumb>
-          <div
-            style={{
-              padding: 24,
-              minHeight: 360,
-              background: colorBgContainer,
-            }}
-          >
-            Bill is a cat.
-          </div>
+          Content
         </Content>
-        <Footer
-          style={{
-            textAlign: 'center',
-            
-          }}
-        >
-          Ant Design ©2023 Created by Ant UED
-        </Footer>
       </Layout>
     </Layout>
   );
