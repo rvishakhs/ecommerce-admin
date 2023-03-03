@@ -2,10 +2,12 @@ import {
   DashboardOutlined ,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
+
 } from '@ant-design/icons';
+import {BsPeople} from "react-icons/bs"
+import {AiOutlineDashboard} from "react-icons/ai"
+import {CgFolderAdd, CgFolder } from "react-icons/cg"
+import {BiCategoryAlt} from "react-icons/bi"
 import { Layout, Menu, theme } from 'antd';
 import React, { useState } from 'react';
 const { Header, Sider, Content } = Layout;
@@ -24,22 +26,34 @@ const Mainui = () => {
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={['1']}
+          defaultSelectedKeys={['dashbard']}
           items={[
             {
-              key: '1',
-              icon: <DashboardOutlined />,
+              key: 'dashbard',
+              icon: <AiOutlineDashboard className='w-5 h-5'/>,
               label: 'Dashboard',
             },
             {
-              key: '1',
-              icon: <DashboardOutlined />,
+              key: 'customers',
+              icon: <BsPeople className='w-5 h-5' />,
               label: 'Customers',
             },
             {
-              key: '1',
-              icon: <DashboardOutlined />,
-              label: 'Dashboard',
+              key: 'catalogue',
+              icon: <BiCategoryAlt className='w-5 h-5' />,
+              label: 'Catalogue',
+              children : [
+                {
+                key: 'products',
+                icon: <CgFolder className='w-5 h-5' />,
+                label: 'products',
+              },
+                {
+                key: 'addproducts',
+                icon: <CgFolderAdd className='w-5 h-5' />,
+                label: 'Add-products',
+              },
+            ]
             },
            
           ]}
