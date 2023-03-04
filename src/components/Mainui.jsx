@@ -19,6 +19,7 @@ import {RiLockPasswordLine} from "react-icons/ri"
 import { Layout, Menu, theme } from 'antd';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Adminanel from './Adminanel';
 const { Header, Sider, Content } = Layout;
 
 
@@ -176,16 +177,9 @@ const Mainui = () => {
             </div>
           </div>
         </Header>
-        <Content
-          style={{
-            margin: '24px 16px',
-            padding: 24,
-            minHeight: 280,
-            background: colorBgContainer,
-          }}
-        >
-          Content
-        </Content>
+          <main className='mt-4 mb-2 mx-2'>
+              <Adminanel />  
+          </main>
       </Layout>
     </Layout>
   );
