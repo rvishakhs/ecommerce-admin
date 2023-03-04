@@ -1,9 +1,74 @@
 import React from 'react'
 import {BsThreeDotsVertical, BsArrowUpRight} from "react-icons/bs"
+import { Column } from '@ant-design/plots';
 
 function Adminanel() {
+    const data = [
+        {
+          type: '家具家电',
+          sales: 38,
+        },
+        {
+          type: '粮油副食',
+          sales: 52,
+        },
+        {
+          type: '生鲜水果',
+          sales: 61,
+        },
+        {
+          type: '美容洗护',
+          sales: 145,
+        },
+        {
+          type: '母婴用品',
+          sales: 48,
+        },
+        {
+          type: '进口食品',
+          sales: 38,
+        },
+        {
+          type: '食品饮料',
+          sales: 38,
+        },
+        {
+          type: '家庭清洁',
+          sales: 38,
+        },
+      ];
+      const config = {
+        data,
+        xField: 'type',
+        yField: 'sales',
+        label: {
+          // 可手动配置 label 数据标签位置
+          position: 'middle',
+          // 'top', 'bottom', 'middle',
+          // 配置样式
+          style: {
+            fill: '#FFFFFF',
+            opacity: 0.6,
+          },
+        },
+        xAxis: {
+          label: {
+            autoHide: true,
+            autoRotate: false,
+          },
+        },
+        meta: {
+          type: {
+            alias: '类别',
+          },
+          sales: {
+            alias: '销售额',
+          },
+        },
+      };
+
   return (
-    <div className='flex flex-col px-6 py-2'>
+    <div className='flex flex-col px-6 py-2 h-[82vh] overflow-y-scroll'>
         {/* Tittle Section */}
         <div className='py-3'>   
             <h2 className='font-bold  text-3xl tracking-wide'>DashBoard</h2>
@@ -63,7 +128,10 @@ function Adminanel() {
         </div>
         {/* Bottom Section */}
         <div>
+            <div className="px-5 py-5">
 
+                <Column {...config} />
+            </div>
         </div>
 
     </div>
