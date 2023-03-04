@@ -1,56 +1,67 @@
 import React from 'react'
 import {BsThreeDotsVertical, BsArrowUpRight} from "react-icons/bs"
 import { Column } from '@ant-design/plots';
+import { Space, Table, Tag } from 'antd';
 
 function Adminanel() {
+
+  // Dummy data for Chart
     const data = [
         {
-          type: '家具家电',
+          type: 'January',
           sales: 38,
         },
         {
-          type: '粮油副食',
+          type: 'February',
           sales: 52,
         },
         {
-          type: '生鲜水果',
+          type: 'March',
           sales: 61,
         },
         {
-          type: '美容洗护',
+          type: 'April',
           sales: 145,
         },
         {
-          type: '母婴用品',
+          type: 'May',
           sales: 48,
         },
         {
-          type: '进口食品',
+          type: 'June',
           sales: 38,
         },
         {
-          type: '食品饮料',
+          type: 'July',
           sales: 38,
         },
         {
-          type: '家庭清洁',
+          type: 'August',
           sales: 38,
+        },
+        {
+          type: 'September',
+          sales: 45,
+        },
+        {
+          type: 'October',
+          sales: 30,
+        },
+        {
+          type: 'November',
+          sales: 28,
+        },
+        {
+          type: 'December',
+          sales: 25,
         },
       ];
       const config = {
         data,
         xField: 'type',
         yField: 'sales',
-        label: {
-          // 可手动配置 label 数据标签位置
-          position: 'middle',
-          // 'top', 'bottom', 'middle',
-          // 配置样式
-          style: {
-            fill: '#FFFFFF',
-            opacity: 0.6,
-          },
-        },
+        color: "#FDDA0D",
+        
         xAxis: {
           label: {
             autoHide: true,
@@ -59,13 +70,88 @@ function Adminanel() {
         },
         meta: {
           type: {
-            alias: '类别',
+            alias: 'month',
           },
           sales: {
-            alias: '销售额',
+            alias: 'Income',
           },
         },
       };
+
+  // Dummy data for Table
+
+  const columns = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
+    render: (text) => <a>{text}</a>,
+  },
+  {
+    title: 'Age',
+    dataIndex: 'age',
+    key: 'age',
+  },
+  {
+    title: 'Address',
+    dataIndex: 'address',
+    key: 'address',
+  },
+  {
+    title: 'Tags',
+    key: 'tags',
+    dataIndex: 'tags',
+    render: (_, { tags }) => (
+      <>
+        {tags.map((tag) => {
+          let color = tag.length > 5 ? 'geekblue' : 'green';
+          if (tag === 'loser') {
+            color = 'volcano';
+          }
+          return (
+            <Tag color={color} key={tag}>
+              {tag.toUpperCase()}
+            </Tag>
+          );
+        })}
+      </>
+    ),
+  },
+  {
+    title: 'Action',
+    key: 'action',
+    render: (_, record) => (
+      <Space size="middle">
+        <a>Invite {record.name}</a>
+        <a>Delete</a>
+      </Space>
+    ),
+  },
+];
+
+const tabledata = [
+  {
+    key: '1',
+    name: 'John Brown',
+    age: 32,
+    address: 'New York No. 1 Lake Park',
+    tags: ['nice', 'developer'],
+  },
+  {
+    key: '2',
+    name: 'Jim Green',
+    age: 42,
+    address: 'London No. 1 Lake Park',
+    tags: ['loser'],
+  },
+  {
+    key: '3',
+    name: 'Joe Black',
+    age: 32,
+    address: 'Sydney No. 1 Lake Park',
+    tags: ['cool', 'teacher'],
+  },
+]
 
   return (
     <div className='flex flex-col px-6 py-2 h-[82vh] overflow-y-scroll'>
@@ -128,9 +214,13 @@ function Adminanel() {
         </div>
         {/* Bottom Section */}
         <div>
-            <div className="px-5 py-5">
-
+            <div className="px-4 py-2 my-4 rounded-lg bg-white">
+                <h2 className='font-bold text-2xl tracking-wide  font-sans mb-2 px-2 py-2'>Income</h2> 
                 <Column {...config} />
+            </div>
+            <div className="px-4 py-2 my-4 rounded-lg bg-white">
+                <h2 className='font-bold text-2xl tracking-wide  font-sans mb-2 px-2 py-2'>Sales Details</h2> 
+                <Table columns={columns} dataSource={tabledata} />
             </div>
         </div>
 
