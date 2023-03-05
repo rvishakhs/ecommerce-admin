@@ -215,7 +215,7 @@ const tabledata = [
         {/* Bottom Section */}
         <div>
             <div className="px-4 py-2 my-4 rounded-lg bg-white">
-                <h2 className='font-bold text-2xl tracking-wide  font-sans mb-2 px-2 py-2'>Income</h2> 
+                <h2 className='font-bold text-2xl tracking-wide  font-sans mb-2 px-2 py-2'>Income Statement</h2> 
                 <Column {...config} />
             </div>
             <div className="px-4 py-2 my-4 rounded-lg bg-white">
