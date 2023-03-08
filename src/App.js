@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
 import Adminanel from "./components/Adminanel";
 import Mainui from "./components/Mainui.jsx";
+import Addblog from "./pages/Addblog";
+import Bloglist from "./pages/Bloglist";
 import Categorylist from "./pages/Categorylist";
 import Enquiry from "./pages/Enquiry";
 import Forgetpassword from "./pages/Forgetpassword";
@@ -23,7 +25,9 @@ function App() {
                 <Route path="enquiry" element={<Enquiry/>}/>
                 <Route path="orders" element={<Orderlist/>}/>
                 <Route path="products" element={<Productlist/>}/>
+                <Route path="blogs" element={<Bloglist/>}/>
                 <Route path="category" element={<Categorylist/>}/>
+                <Route path="addblogs" element={<Addblog/>}/>
               </Route>
           </Routes>
         </BrowserRouter>
