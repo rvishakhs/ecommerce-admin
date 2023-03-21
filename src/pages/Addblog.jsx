@@ -12,6 +12,9 @@ function Addblog() {
                 <form>
                     <Inputcomponent type="text" id="tittle" label="Blog Tittle"/>
                         
+                   <button className='bg-green-500 rounded-lg py-2 px-3 mt-3'>
+                    Post Blog  
+                  </button>     
                 
                 </form>
             </div>
