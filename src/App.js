@@ -4,6 +4,8 @@ import './App.css';
 import Adminanel from "./components/Adminanel";
 import Mainui from "./components/Mainui.jsx";
 import Addblog from "./pages/Addblog";
+import Addblogcategory from "./pages/Addblogcategory";
+import Blogcategorylist from "./pages/Blogcategorylist";
 import Bloglist from "./pages/Bloglist";
 import Categorylist from "./pages/Categorylist";
 import Enquiry from "./pages/Enquiry";
@@ -26,6 +28,8 @@ function App() {
                 <Route path="orders" element={<Orderlist/>}/>
                 <Route path="products" element={<Productlist/>}/>
                 <Route path="blogs" element={<Bloglist/>}/>
+                <Route path="blogcategories" element={<Blogcategorylist/>}/>
+                <Route path="addblogcategories" element={<Addblogcategory/>}/>
                 <Route path="category" element={<Categorylist/>}/>
                 <Route path="addblogs" element={<Addblog/>}/>
               </Route>

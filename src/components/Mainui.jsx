@@ -12,7 +12,7 @@ import {ImBooks, ImProfile} from "react-icons/im"
 import {GiNotebook} from "react-icons/gi"
 import {BsBell} from "react-icons/bs"
 import {FiLogOut} from "react-icons/fi"
-import {TbFileInvoice, TbNotebook} from "react-icons/tb"
+import {TbFileInvoice, TbNotebook, TbCategory, TbListCheck} from "react-icons/tb"
 import {MdCategory, MdManageAccounts} from "react-icons/md"
 import {RiLockPasswordLine} from "react-icons/ri"
 
@@ -110,6 +110,16 @@ const Mainui = () => {
                   key: 'addblogs',
                   icon: <GiNotebook className='w-5 h-5' />,
                   label: 'Add-Blogs',
+                },
+                {
+                  key: 'blogcategories',
+                  icon: <TbListCheck className='w-5 h-5' />,
+                  label: 'Blog Categories',
+                },
+                {
+                  key: 'addblogcategories',
+                  icon: <GiNotebook className='w-5 h-5' />,
+                  label: 'Add-Blog Categories',
                 }
               ]
             },
