@@ -5,8 +5,11 @@ import Adminanel from "./components/Adminanel";
 import Mainui from "./components/Mainui.jsx";
 import Addblog from "./pages/Addblog";
 import Addblogcategory from "./pages/Addblogcategory";
+import Addbrands from "./pages/Addbrands";
+import Addcategory from "./pages/Addcategory";
 import Blogcategorylist from "./pages/Blogcategorylist";
 import Bloglist from "./pages/Bloglist";
+import Brands from "./pages/Brands";
 import Categorylist from "./pages/Categorylist";
 import Enquiry from "./pages/Enquiry";
 import Forgetpassword from "./pages/Forgetpassword";
@@ -31,6 +34,9 @@ function App() {
                 <Route path="blogcategories" element={<Blogcategorylist/>}/>
                 <Route path="addblogcategories" element={<Addblogcategory/>}/>
                 <Route path="category" element={<Categorylist/>}/>
+                <Route path="brands" element={<Brands/>}/>
+                <Route path="addbrand" element={<Addbrands/>}/>
+                <Route path="addcategory" element={<Addcategory/>}/>
                 <Route path="addblogs" element={<Addblog/>}/>
               </Route>
           </Routes>

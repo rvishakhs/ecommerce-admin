@@ -16,6 +16,7 @@ import {TbFileInvoice, TbNotebook, TbCategory, TbListCheck} from "react-icons/tb
 import {MdCategory, MdManageAccounts} from "react-icons/md"
 import {RiLockPasswordLine} from "react-icons/ri"
 
+
 import { Layout, Menu, theme } from 'antd';
 import React, { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
@@ -78,6 +79,16 @@ const Mainui = () => {
                 key: 'addproducts',
                 icon: <CgFolderAdd className='w-5 h-5' />,
                 label: 'Add-products',
+              },
+                {
+                key: 'brands',
+                icon: <CgFolder className='w-5 h-5' />,
+                label: 'Brands',
+              },
+                {
+                key: 'addbrand',
+                icon: <CgFolderAdd className='w-5 h-5' />,
+                label: 'Add-Brand',
               },
                 {
                 key: 'category',
