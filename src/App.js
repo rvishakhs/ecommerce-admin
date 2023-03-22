@@ -7,6 +7,7 @@ import Addblog from "./pages/Addblog";
 import Addblogcategory from "./pages/Addblogcategory";
 import Addbrands from "./pages/Addbrands";
 import Addcategory from "./pages/Addcategory";
+import Addproduct from "./pages/Addproduct";
 import Blogcategorylist from "./pages/Blogcategorylist";
 import Bloglist from "./pages/Bloglist";
 import Brands from "./pages/Brands";
@@ -30,6 +31,7 @@ function App() {
                 <Route path="enquiry" element={<Enquiry/>}/>
                 <Route path="orders" element={<Orderlist/>}/>
                 <Route path="products" element={<Productlist/>}/>
+                <Route path="addproducts" element={<Addproduct/>}/>
                 <Route path="blogs" element={<Bloglist/>}/>
                 <Route path="blogcategories" element={<Blogcategorylist/>}/>
                 <Route path="addblogcategories" element={<Addblogcategory/>}/>
