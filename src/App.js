@@ -24,7 +24,6 @@ function App() {
         <BrowserRouter>
           <Routes>
               <Route path="/" element={<Login />}/>
-              <Route path="/forgetpassword" element={<Forgetpassword />}/>
               <Route path="/admin" element={<Mainui />}>
                 <Route index element={<Adminanel/>} />
                 <Route path="dashbard" element={<Adminanel/>} />
@@ -40,6 +39,7 @@ function App() {
                 <Route path="addbrand" element={<Addbrands/>}/>
                 <Route path="addcategory" element={<Addcategory/>}/>
                 <Route path="addblogs" element={<Addblog/>}/>
+                <Route path="resetpassword" element={<Forgetpassword/>}/>
               </Route>
           </Routes>
         </BrowserRouter>

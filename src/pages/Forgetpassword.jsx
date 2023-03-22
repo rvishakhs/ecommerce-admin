@@ -8,8 +8,8 @@ import {BiArrowBack} from "react-icons/bi"
 function Forgetpassword() {
   return (
         <>
-            <main className='bg-gray-200 '>
-                <div className='max-w-6xl mx-auto flex items-center h-screen md:h-screen justify-center'>
+            <main className=''>
+                <div className='max-w-6xl mx-auto flex items-center my-16 justify-center'>
                     <div className='flex flex-col justify-center px-6 bg-white md:w-[450px] w-[380px] h-[550px] py-2 rounded-lg border border-gray-400'>
                         <h2 className='font-bold font-sans leading-10 text-3xl tracking-wider'>Forget Password </h2>
                             <p className='font-medium text-gray-500 tracking-wide text-base mt-2'>Enter your recover email address to reset password</p>

@@ -20,8 +20,8 @@ import {RiLockPasswordLine} from "react-icons/ri"
 import { Layout, Menu, theme } from 'antd';
 import React, { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import Adminanel from './Adminanel';
-const { Header, Sider, Content } = Layout;
+import { Dropdown, Space } from 'antd';
+const { Header, Sider } = Layout;
 
 
 const Mainui = () => {
@@ -31,6 +31,10 @@ const Mainui = () => {
   } = theme.useToken();
 
   const navigate = useNavigate()
+
+ 
+
+
   return (
     <Layout className='h-screen '>
       <Sider 
@@ -181,19 +185,29 @@ const Mainui = () => {
               })}
             </div>
             <div className='flex '>
-                <div className='flex relative items-center gap-2'>
+                <div 
+                  className='flex relative items-center gap-2 dropdown'
+                  
+                >
                     <BsBell className=' w-6 mt-2 h-6 mr-4 cursor-pointer ' />
                     <div className='absolute w-3 top-[12px] right-[12px] animate-pulse h-3 rounded-full bg-yellow-400'></div>
                 </div>
-                <div className='flex items-center space-x-1'>
+                <div className='flex items-center space-x-1 '>
                   <img 
                     src='https://avatars.githubusercontent.com/u/56556101?v=4'
                     className='w-9 h-10 mt-2 rounded-xl object-contain'
                   />
-                  <div className='flex flex-col mt-2 px-2'>
-                    <p className='font-medium text-lg text-black tracking-wide'>Visakh SR</p>
-                    <p className='font-medium text-base text-gray-500 '>Rvishaks@gmail.com</p>
+                  <div 
+                    className='flex flex-col mt-2 px-2 '
+                    
+                  >
+                        <p 
+                        className='font-medium text-lg text-black tracking-wide'
+                        >Visakh SR</p>
+                        <p className='font-medium text-base text-gray-500 '>Rvishaks@gmail.com</p>
+                    
                   </div>
+                    
                 </div>
             </div>
           </div>
