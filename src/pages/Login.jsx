@@ -5,8 +5,20 @@ import { Divider } from 'antd';
 import  {FaFacebookF}  from "react-icons/fa";
 import  {BsGithub}  from "react-icons/bs";
 import  {AiOutlineGoogle}  from "react-icons/ai";
+import { useFormik } from 'formik';
 
 function Login() {
+
+    // Implymenting formik
+    const formik = useFormik({
+        initialValues: {
+          email: '',
+          password : "",
+        },
+        onSubmit: values => {
+          alert(JSON.stringify(values, null, 2));
+        },
+      });
   return (
         <>
             <main className='bg-gray-200 '>
@@ -14,24 +26,44 @@ function Login() {
                     <div className='flex flex-col justify-center px-6 bg-white md:w-[450px] w-[380px] h-[550px] py-2 rounded-lg border border-gray-400'>
                         <h2 className='font-bold font-sans leading-10 text-3xl tracking-wider'>Sign In </h2>
                         <p className='font-medium text-gray-500 tracking-wide text-base mt-2'>Login to your account to countinue</p>
-                        <div className='py-2 space-y-2 mt-2'>
-                            <Inputcomponent type="email" id="inputemail" placeholder="" label="Email address"/>
-                            <Inputcomponent type="password" id="password" placeholder="" label="Password"/>
-                        </div>
-                        <div className='flex justify-between'>
-                            <div className='flex gap-2 py-1'>
-                                <input type="checkbox"  />  
-                                <p className='font-normal text-sm'>Remeber Me</p>  
+                            <form action='' onSubmit={formik.handleSubmit}>
+                                <div className='py-2 space-y-2 mt-2'>
+                                    <Inputcomponent 
+                                        type="email" 
+                                        name="email" 
+                                        id="inputemail" 
+                                        placeholder="" 
+                                        label="Email address"
+                                        val={formik.values.email} 
+                                        onCH={formik.handleChange("email")}
 
-                            </div>
-                            <Link to="/forgetpassword" className='tracking-wide font-medium text-sm'>Forget Password?</Link>
-                        </div>
-                            <div className='w-full'> 
-                                <Link to="/admin" >
-                                    <button className='bg-yellow-400 w-full py-2  font-medium text-base tracking-wide mt-2 mx-2 rounded-md hover:!border-black'>Sign In</button>
-                                </Link>
-                            </div>
-                        
+                                    />
+                                    <Inputcomponent 
+                                        type="password" 
+                                        name="password"
+                                        id="password" 
+                                        placeholder="" 
+                                        label="Password"
+                                        val={formik.values.password} 
+                                        onCH={formik.handleChange("password")}
+                                    />
+                                    <div className='flex justify-between'>
+                                        <div className='flex gap-2 py-1'>
+                                            <input type="checkbox"  />  
+                                            <p className='font-normal text-sm'>Remeber Me</p>  
+
+                                        </div>
+                                        <Link to="/forgetpassword" className='tracking-wide font-medium text-sm'>Forget Password?</Link>
+                                    </div>
+                                    <div className='w-full'> 
+                                            <button 
+                                                className='bg-yellow-400 w-full py-2  font-medium text-base tracking-wide mt-2 mx-2 rounded-md hover:!border-black'
+                                                type='submit'
+                                            >Sign In
+                                            </button>
+                                    </div>
+                                </div>
+                             </form>
                         <div>
                             <Divider plain>Or Continue with</Divider>
                             <div className='flex gap-2 flex-row justify-around py-2'>
