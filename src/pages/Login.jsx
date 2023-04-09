@@ -1,24 +1,48 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import Inputcomponent from '../components/Inputcomponent'
 import { Divider } from 'antd';
 import  {FaFacebookF}  from "react-icons/fa";
 import  {BsGithub}  from "react-icons/bs";
 import  {AiOutlineGoogle}  from "react-icons/ai";
 import { useFormik } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import * as Yup from 'yup';
+import { login } from '../features/auth/authSlice';
 
 function Login() {
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    // Yup validation
+    let schema = Yup.object().shape({
+        email: Yup.string().email().required("Please enter a valid email address"),
+        password : Yup.string().required(" * Please enter your password")
+      });
 
     // Implymenting formik
     const formik = useFormik({
         initialValues: {
           email: '',
-          password : "",
+          password : '',
         },
-        onSubmit: values => {
+        validationSchema : schema,
+        onSubmit: (values) => {
+          dispatch(login(values))  
           alert(JSON.stringify(values, null, 2));
         },
       });
+
+      const {user , isError ,isLoading , isSucess, message } = useSelector((state) => state.auth)
+      useEffect(() => {
+        if(user || isSucess) {
+            navigate("admin") 
+        } else {
+            alert("Admin login failed")
+        }
+      
+      }, [user , isError ,isLoading , isSucess, message])
+      
   return (
         <>
             <main className='bg-gray-200 '>
@@ -38,6 +62,11 @@ function Login() {
                                         onCH={formik.handleChange("email")}
 
                                     />
+                                    <div className='text-sm text-red-400'>
+                                        {formik.touched.email && formik.errors.email ? (
+                                            <div>{formik.errors.email}</div>
+                                        ) : null}
+                                    </div>
                                     <Inputcomponent 
                                         type="password" 
                                         name="password"
@@ -47,6 +76,11 @@ function Login() {
                                         val={formik.values.password} 
                                         onCH={formik.handleChange("password")}
                                     />
+                                    <div className='text-sm text-red-400'>
+                                        {formik.touched.password && formik.errors.password ? (
+                                            <div>{formik.errors.password}</div>
+                                        ) : null}
+                                    </div>
                                     <div className='flex justify-between'>
                                         <div className='flex gap-2 py-1'>
                                             <input type="checkbox"  />  

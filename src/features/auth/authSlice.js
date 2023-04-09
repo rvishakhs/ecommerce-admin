@@ -8,6 +8,7 @@ const UserDefaultState = {
     email : null,
     mobile : null,
     token : null,
+    role : null,
 }
 
 const initialState = {
