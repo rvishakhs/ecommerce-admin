@@ -1,18 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { RiNurseFill } from 'react-icons/ri'
 import authService from './authService'
 
-const UserDefaultState = {
-    _id : null,
-    firstname : null,
-    lastname : null,
-    email : null,
-    mobile : null,
-    token : null,
-    role : null,
-}
-
+const getuserFromLocalStorage = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : null
+ 
 const initialState = {
-    user : UserDefaultState,
+    user : getuserFromLocalStorage,
     isError : false,
     isLoading : false,
     isSucess: false,
