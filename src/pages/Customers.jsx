@@ -15,42 +15,45 @@ function Customers() {
           title: 'Name',
           dataIndex: 'name',
           key: 'name',
+          sorter: (a, b) => a.name.length - b.name.length, 
         },
         {
-          title: 'Status',
-          dataIndex: 'status',
-          key: 'Status',
+            title: 'Email',
+            dataIndex: 'email',
+            key: 'Email',
         },
         {
-            title: 'Product',
-            dataIndex: 'product',
-            key: 'Product',
-          },
-    ]
-
-    const tabledata = []
-        for(let i = 0; i<50 ; i++) {
-            tabledata.push({
-                key: i,
-                name : `Harry potter ${i}`,
-                product : `item ${i}`,
-                status : `London Canon street ${i}`
-            })
-        }
+          title: 'Mobile',
+          dataIndex: 'mobile',
+          key: 'Mobile',
+        },
+      ]
         const dispatch = useDispatch()
           useEffect(()=> {
             dispatch(getusers())
           }, [])
+          //  Assigning avaialbe data using state
+          const customerstate = useSelector((state) => state.customer.customer )
 
-          const state = useSelector((state) => state.users)
+          // Table creation using feched customer data
+          const tabledata = []
+           for(let i = 0; i<customerstate.length ; i++) {
+            tabledata.push({
+                key: i + 1,
+                name : customerstate[i].firstname + " " + customerstate[i].lastname,
+                email : customerstate[i].email,
+                mobile : customerstate[i].mobile
+            })
+          }
 
-          console.log(state);
+
   return (
+
     <>
     <div className='mt-3 mx-2 py-2 h-[82vh] overflow-y-scroll '>
         <h2 className='font-bold text-xl tracking-wide px-3 py-2 '>All Customers</h2>
         <div className='px-2 py-2 '>
-            <Table columns={columns} dataSource={tabledata} tableLayout/>
+            <Table columns={columns} dataSource={tabledata}  tableLayout/>
 
         </div>
     </div>

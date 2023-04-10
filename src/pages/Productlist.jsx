@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {  Table } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProducts } from '../features/products/productSlice';
 
 function Productlist() {
 
@@ -10,29 +12,61 @@ function Productlist() {
           key: 'slno',
         },
         {
-          title: 'Name',
-          dataIndex: 'name',
-          key: 'name',
+          title: 'Tittle',
+          dataIndex: 'tittle',
+          key: 'tittle',
         },
         {
-          title: 'Status',
-          dataIndex: 'status',
-          key: 'Status',
+          title: 'Category',
+          dataIndex: 'category',
+          key: 'category',
         },
         {
-            title: 'Product',
-            dataIndex: 'product',
-            key: 'Product',
-          },
+          title: 'Brand',
+          dataIndex: 'brand',
+          key: 'brand',
+        },
+        {
+          title: 'Quantity',
+          dataIndex: 'quantity',
+          key: 'quantity',
+        },
+        {
+          title: 'Sold',
+          dataIndex: 'sold',
+          key: 'sold',
+        },
+        {
+          title: 'Price',
+          dataIndex: 'price',
+          key: 'price',
+        },
+        {
+          title: 'Rating',
+          dataIndex: 'totalrating',
+          key: 'totalrating',
+        },
     ]
 
+    const dispatch = useDispatch()
+          useEffect(()=> {
+            dispatch(getProducts())
+          }, [])
+          //  Assigning avaialbe data using state
+          const productstate = useSelector((state) => state.product.product )
+
+          // Change table data according to product state
     const tabledata = []
-        for(let i = 0; i<50 ; i++) {
+        for(let i = 0; i<productstate.length ; i++) {
             tabledata.push({
-                key: i,
-                name : `Harry potter ${i}`,
-                product : `item ${i}`,
-                status : `London Canon street ${i}`
+                key: i + 1,
+                tittle : productstate[i].tittle,
+                category : productstate[i].category,
+                brand : productstate[i].brand,
+                quantity : productstate[i].quantity,
+                sold : productstate[i].sold,
+                price : productstate[i].price,
+                totalrating : productstate[i].totalrating
             })
         }
   return (
