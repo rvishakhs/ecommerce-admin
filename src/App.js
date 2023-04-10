@@ -12,6 +12,7 @@ import Blogcategorylist from "./pages/Blogcategorylist";
 import Bloglist from "./pages/Bloglist";
 import Brands from "./pages/Brands";
 import Categorylist from "./pages/Categorylist";
+import Customers from "./pages/Customers";
 import Enquiry from "./pages/Enquiry";
 import Forgetpassword from "./pages/Forgetpassword";
 import Login from "./pages/Login";
@@ -36,6 +37,7 @@ function App() {
                 <Route path="addblogcategories" element={<Addblogcategory/>}/>
                 <Route path="category" element={<Categorylist/>}/>
                 <Route path="brands" element={<Brands/>}/>
+                <Route path="customers" element={<Customers/>}/>
                 <Route path="addbrand" element={<Addbrands/>}/>
                 <Route path="addcategory" element={<Addcategory/>}/>
                 <Route path="addblogs" element={<Addblog/>}/>
