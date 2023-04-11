@@ -2,6 +2,9 @@ import React, { useEffect } from 'react'
 import {  Table } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProducts } from '../features/products/productSlice';
+import { Link } from 'react-router-dom';
+import {FiEdit} from 'react-icons/fi'
+import {AiOutlineDelete} from 'react-icons/ai'
 
 function Productlist() {
 
@@ -15,16 +18,19 @@ function Productlist() {
           title: 'Tittle',
           dataIndex: 'tittle',
           key: 'tittle',
+          sorter: (a, b) => a.tittle.length - b.tittle.length, 
         },
         {
           title: 'Category',
           dataIndex: 'category',
           key: 'category',
+          sorter: (a, b) => a.category.length - b.category.length,
         },
         {
           title: 'Brand',
           dataIndex: 'brand',
           key: 'brand',
+          sorter: (a, b) => a.brand.length - b.brand.length,
         },
         {
           title: 'Quantity',
@@ -40,11 +46,17 @@ function Productlist() {
           title: 'Price',
           dataIndex: 'price',
           key: 'price',
+          sorter: (a, b) => a.price - b.price,
         },
         {
           title: 'Rating',
           dataIndex: 'totalrating',
           key: 'totalrating',
+        },
+        {
+          title: 'Action',
+          dataIndex: 'action',
+          key: 'action',
         },
     ]
 
@@ -66,7 +78,19 @@ function Productlist() {
                 quantity : productstate[i].quantity,
                 sold : productstate[i].sold,
                 price : productstate[i].price,
-                totalrating : productstate[i].totalrating
+                totalrating : productstate[i].totalrating,
+                action : (
+                  <div className='flex flex-row space-x-2'>
+
+                    <Link to="/">
+                      <FiEdit className='w-5 h-5'/>
+                    </Link>
+                    <Link to="/">
+                      <AiOutlineDelete className='w-[22px] h-[22px]'/>
+                    </Link>
+                  
+                  </div>
+                )
             })
         }
   return (
