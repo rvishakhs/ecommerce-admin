@@ -5,6 +5,7 @@ import productReducer from "../features/products/productSlice"
 import blogReducer from "../features/blogs/blogSlice"
 import brandReducer from "../features/brand/brandSlice"
 import prodCategoryReducer from "../features/products/productCategorySlice"
+import blogCategoryReducer from "../features/blogs/blogCategorySlice"
 
 
 
@@ -16,5 +17,6 @@ export const store = configureStore({
     prodCategory : prodCategoryReducer,
     blogs : blogReducer,
     brand : brandReducer, 
+    blogCategory : blogCategoryReducer,
   },
 })
