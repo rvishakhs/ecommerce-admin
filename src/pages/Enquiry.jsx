@@ -1,5 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {  Table } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { getenquiry } from '../features/enquiry/enquirySlice';
+import { Link } from 'react-router-dom';
+import {FiEdit} from 'react-icons/fi'
+import {AiOutlineDelete} from 'react-icons/ai'
+
+
 
 function Enquiry() {
 
@@ -15,24 +22,58 @@ function Enquiry() {
           key: 'name',
         },
         {
-          title: 'Status',
-          dataIndex: 'status',
-          key: 'Status',
+          title: 'Email',
+          dataIndex: 'email',
+          key: 'email',
         },
         {
-            title: 'Product',
-            dataIndex: 'product',
-            key: 'Product',
-          },
+          title: 'Mobile',
+          dataIndex: 'mobile',
+          key: 'mobile',
+        },
+        {
+          title: 'Message',
+          dataIndex: 'message',
+          key: 'message',
+        },
+        {
+          title: 'Action',
+          dataIndex: 'action',
+          key: 'action',
+        },
+        
     ]
 
+    const dispatch = useDispatch()
+
+    useEffect(()=> {
+      dispatch(getenquiry())
+    }, [])
+
+    const enquirystate = useSelector((state) => state.enquiry.enquiry)
+
+    console.log(enquirystate);
+
     const tabledata = []
-        for(let i = 0; i<50 ; i++) {
+        for(let i = 0; i<enquirystate.length ; i++) {
             tabledata.push({
-                key: i,
-                name : `Harry potter ${i}`,
-                product : `item ${i}`,
-                status : `London Canon street ${i}`
+                key: i+ 1,
+                name : enquirystate[i].tittle,
+                email : enquirystate[i].email,
+                mobile : enquirystate[i].mobile,
+                message : enquirystate[i].comments,
+                action : (
+                  <div className='flex flex-row space-x-2'>
+
+                    <Link to="/">
+                      <FiEdit className='w-5 h-5'/>
+                    </Link>
+                    <Link to="/">
+                      <AiOutlineDelete className='w-[22px] h-[22px]'/>
+                    </Link>
+                  
+                  </div>
+                )
             })
         }
   return (
