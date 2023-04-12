@@ -4,6 +4,7 @@ import customerReducer from "../features/customers/customersSlice"
 import productReducer from "../features/products/productSlice"
 import blogReducer from "../features/blogs/blogSlice"
 import brandReducer from "../features/brand/brandSlice"
+import prodCategoryReducer from "../features/products/productCategorySlice"
 
 
 
@@ -12,6 +13,7 @@ export const store = configureStore({
     auth : authReducer, 
     customer : customerReducer,
     product: productReducer,
+    prodCategory : prodCategoryReducer,
     blogs : blogReducer,
     brand : brandReducer, 
   },

@@ -1,5 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {  Table } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProdCategory } from '../features/products/productCategorySlice';
+import { Link } from 'react-router-dom';
+import {FiEdit} from 'react-icons/fi'
+import {AiOutlineDelete} from 'react-icons/ai'
+import moment from 'moment';
+
 
 function Categorylist() {
 
@@ -13,27 +20,48 @@ function Categorylist() {
           title: 'Name',
           dataIndex: 'name',
           key: 'name',
+          sorter: (a, b) => a.name.length - b.name.length, 
         },
         {
-          title: 'Status',
-          dataIndex: 'status',
-          key: 'Status',
+          title: 'CreatedAt',
+          dataIndex: 'createdAt',
+          key: 'createdAt',
         },
         {
-            title: 'Product',
-            dataIndex: 'product',
-            key: 'Product',
-          },
+          title: 'Action',
+          dataIndex: 'action',
+          key: 'action',
+        },
     ]
 
+    const dispatch = useDispatch();
+
+    useEffect(()=>{
+      dispatch(getProdCategory())
+    }, [])
+
+    const productCategoryState = useSelector((state)=> state.prodCategory.productcategory)
+
     const tabledata = []
-        for(let i = 0; i<50 ; i++) {
-            tabledata.push({
-                key: i,
-                name : `Harry potter ${i}`,
-                product : `item ${i}`,
-                status : `London Canon street ${i}`
-            })
+        for(let i = 0; i<productCategoryState.length ; i++) {
+          tabledata.push({
+            key: i + 1,
+            name : productCategoryState[i].tittle,
+            createdAt : moment( productCategoryState[i].createdAt).format("MMM Do YY"),
+            action : (
+              <div className='flex flex-row space-x-2'>
+
+                <Link to="/">
+                  <FiEdit className='w-5 h-5'/>
+                </Link>
+                <Link to="/">
+                  <AiOutlineDelete className='w-[22px] h-[22px]'/>
+                </Link>
+              
+              </div>
+            )
+            
+        })
         }
   return (
     <>

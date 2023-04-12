@@ -43,7 +43,6 @@ function Brands() {
 
     const brandState = useSelector((state)=> state.brand.brand)
 
-    console.log(brandState)
     
     const tabledata = []
         for(let i = 0; i<brandState.length ; i++) {
