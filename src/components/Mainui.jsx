@@ -13,7 +13,7 @@ import {GiNotebook} from "react-icons/gi"
 import {BsBell} from "react-icons/bs"
 import {FiLogOut} from "react-icons/fi"
 import {TbFileInvoice, TbNotebook, TbCategory, TbListCheck} from "react-icons/tb"
-import {MdCategory, MdManageAccounts} from "react-icons/md"
+import {MdCategory, MdManageAccounts, MdOutlineColorLens, MdOutlineFormatColorFill} from "react-icons/md"
 import {RiLockPasswordLine} from "react-icons/ri"
 
 
@@ -103,6 +103,16 @@ const Mainui = () => {
                 key: 'addcategory',
                 icon: <CgDuplicate className='w-5 h-5' />,
                 label: 'Add-Category',
+              },
+                {
+                key: 'colors',
+                icon: <MdOutlineColorLens className='w-5 h-5' />,
+                label: 'Colors',
+              },
+                {
+                key: 'addcolors',
+                icon: <MdOutlineFormatColorFill className='w-5 h-5' />,
+                label: 'Add-Color',
               },
             ]
             },
