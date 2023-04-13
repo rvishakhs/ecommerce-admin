@@ -32,9 +32,9 @@ function Enquiry() {
           key: 'mobile',
         },
         {
-          title: 'Message',
-          dataIndex: 'message',
-          key: 'message',
+          title: 'Status',
+          dataIndex: 'status',
+          key: 'status',
         },
         {
           title: 'Action',
@@ -61,17 +61,21 @@ function Enquiry() {
                 name : enquirystate[i].tittle,
                 email : enquirystate[i].email,
                 mobile : enquirystate[i].mobile,
-                message : enquirystate[i].comments,
+                status : (
+                  <>
+                    <select name='' className='form-control form-select' id=''>
+                      <option value="">Set Status</option>
+                    </select>
+                  </>
+                ),
                 action : (
                   <div className='flex flex-row space-x-2'>
-
                     <Link to="/">
                       <FiEdit className='w-5 h-5'/>
                     </Link>
                     <Link to="/">
                       <AiOutlineDelete className='w-[22px] h-[22px]'/>
                     </Link>
-                  
                   </div>
                 )
             })
