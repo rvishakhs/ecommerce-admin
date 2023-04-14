@@ -12,6 +12,7 @@ import { login } from '../features/auth/authSlice';
 import { getbrands } from '../features/brand/brandSlice';
 import { getProdCategory } from '../features/products/productCategorySlice';
 import { getcolors } from '../features/colors/colorSlice';
+import InputNumberComponent from '../components/InputNumberComponent';
 
 
 
@@ -23,6 +24,7 @@ function Addproduct() {
   tittle: Yup.string().required("Please enter tittle for the product"),
   description : Yup.string().required("Please enter product description "),
   price : Yup.number().required("Please enter product price "),
+  quantity : Yup.number().required("Please enter product quntity ")
 });
 
 // Implymenting formik
@@ -31,6 +33,7 @@ const formik = useFormik({
     tittle: '',
     description : '',
     price : 1,
+    quantity : 0,
   },
   validationSchema : schema,
   onSubmit: (values) => { 
@@ -51,27 +54,7 @@ const formik = useFormik({
   const productCategoryState = useSelector((state)=> state.prodCategory.productcategory)
   const colorstate = useSelector((state) => state.colors.color)
 
-  const props = {
-    name: 'file',
-    multiple: true,
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-    onChange(info) {
-      const { status } = info.file;
-      if (status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
-      if (status === 'done') {
-        message.success(`${info.file.name} file uploaded successfully.`);
-      } else if (status === 'error') {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-    onDrop(e) {
-      console.log('Dropped files', e.dataTransfer.files);
-    },
-  };
-  const { Dragger } = Upload;
-    
+  
   return (
     <div>
         <>
@@ -159,15 +142,14 @@ const formik = useFormik({
                     {/* Price */}
                      <div className='flex flex-col w-[10ŸŸ~%] '>
                         <label for="Select category" className='my-1 font-medium'> Price</label>
-                        <InputNumber 
-                          min={1} 
-                          max={99999} 
-                          defaultValue={1}
-                          id='price'
-                          value={formik.values.price} 
-                          onChange={formik.handleChange("price")}
-                          onBlur={formik.handleBlur("price")}
-                         /> 
+                        <InputNumberComponent 
+                          type="Number" 
+                          id="Price"      
+                          val={formik.values.price} 
+                          onCH={formik.handleChange("price")}
+                          className = "w-28"
+                        />
+                      
                           <div className='text-sm text-red-400'>
                             {formik.touched.price && formik.errors.price ? (
                             <div>{formik.errors.price}</div>
@@ -177,23 +159,25 @@ const formik = useFormik({
                       {/* Quantity */}
                       <div className='flex flex-col '>
                         <label for="Select category" className='my-1 font-medium'> Quantity</label>
-                        <InputNumber min={1} max={20} defaultValue={1} onChange="" /> 
+                        <InputNumberComponent 
+                          type="Number" 
+                          id="quantity"      
+                          val={formik.values.quantity} 
+                          onCH={formik.handleChange("quantity")}
+                          className = "w-28"
+                        />
+                      
+                          <div className='text-sm text-red-400'>
+                            {formik.touched.quantity && formik.errors.quantity ? (
+                            <div>{formik.errors.quantity}</div>
+                            ) : null}
+                          </div>
                       </div>
 
                   </div>
 
               
                   <label for="Select category" className='my-2 font-medium'>Upload Image</label>
-                  <Dragger  {...props}>
-                    <p className="ant-upload-drag-icon">
-                      <InboxOutlined />
-                    </p>
-                    <p className="ant-upload-text">Click or drag file to this area to upload</p>
-                    <p className="ant-upload-hint">
-                      Support for a single or bulk upload. Strictly prohibited from uploading company data or other
-                      banned files.
-                    </p>
-                </Dragger>
 
 
                         

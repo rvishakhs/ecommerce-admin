@@ -1,8 +1,8 @@
 import React from 'react'
 
-function Inputcomponent({type, id, placeholder, label, name, val, onCH, className}) {
+function InputNumberComponent({type, id, placeholder, label, name, val, onCH, className}) {
   return (
-    <div class="form-floating">
+    <div class="form">
         <input 
             type={type}
             name={name}
@@ -18,4 +18,4 @@ function Inputcomponent({type, id, placeholder, label, name, val, onCH, classNam
   )
 }
 
-export default Inputcomponent  
+export default InputNumberComponent  
