@@ -63,7 +63,7 @@ function Enquiry() {
                 mobile : enquirystate[i].mobile,
                 status : (
                   <>
-                    <select name='' className='form-control form-select' id=''>
+                    <select name='' className='form-control form-select' id>
                       <option value="">Set Status</option>
                     </select>
                   </>

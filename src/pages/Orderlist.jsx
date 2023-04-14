@@ -1,5 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {  Table } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllOrders } from '../features/Order/OrderSlice';
+import { Link } from 'react-router-dom';
+import {FiEdit} from 'react-icons/fi'
+import {AiOutlineDelete} from 'react-icons/ai'
+
 
 function Orderlist() {
 
@@ -20,19 +26,61 @@ function Orderlist() {
           key: 'Status',
         },
         {
-            title: 'Product',
-            dataIndex: 'product',
-            key: 'Product',
-          },
+          title: 'Products',
+          dataIndex: 'products',
+          key: 'Products',
+        },
+        {
+          title: 'OrderId',
+          dataIndex: 'orderId',
+          key: 'orderId',
+        },
+        {
+          title: 'OrderCreated',
+          dataIndex: 'orderCreated',
+          key: 'orderCreated',
+        },
+        {
+          title: 'Action',
+          dataIndex: 'action',
+          key: 'action',
+        },
     ]
 
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+      dispatch(getAllOrders())
+    }, [])
+
+    const orderstate = useSelector((state) => state.orders.allOrders)
+
     const tabledata = []
-        for(let i = 0; i<50 ; i++) {
+        for(let i = 0; i<orderstate.length ; i++) {
             tabledata.push({
-                key: i,
-                name : `Harry potter ${i}`,
-                product : `item ${i}`,
-                status : `London Canon street ${i}`
+                key: i + 1,
+                name : orderstate[i].orderBy.firstname,
+                status : orderstate[i].orderStatus,
+                products : orderstate[i].products.map((item, index) => {
+                  return (
+                    <>
+                        <p>{item.product.tittle}</p>
+                    </>
+                  )
+                }),
+                orderId : orderstate[i]._id,
+                orderCreated : new Date(orderstate[i].createdAt).toLocaleString(),
+                action : (
+                  <div className='flex flex-row space-x-2'>
+                    <Link to="/">
+                      <FiEdit className='w-5 h-5'/>
+                    </Link>
+                    <Link to="/">
+                      <AiOutlineDelete className='w-[22px] h-[22px]'/>
+                    </Link>
+                  </div>
+                )
+
             })
         }
 
