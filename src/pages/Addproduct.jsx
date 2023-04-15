@@ -11,6 +11,8 @@ import { getcolors } from '../features/colors/colorSlice';
 import InputNumberComponent from '../components/InputNumberComponent';
 import { Multiselect } from 'react-widgets';
 import "react-widgets/styles.css";
+import Dropzone from 'react-dropzone'
+import { imageUpload } from '../features/uploadImages/uploadimageSlice';
 
 
 
@@ -64,6 +66,9 @@ const formik = useFormik({
   const brandState = useSelector((state)=> state.brand.brand)
   const productCategoryState = useSelector((state)=> state.prodCategory.productcategory)
   const colorstate = useSelector((state) => state.colors.color)
+  const imageState = useSelector((state)=> state.imageupload.images)
+
+
 
   // Taking values for the color state
 
@@ -220,7 +225,28 @@ const formik = useFormik({
 
               
                   <label for="Select category" className='my-2 font-medium'>Upload Image</label>
+                  <div className='w-full p-5 flex text-center justify-center border border-gray-300 bg-white'>
+                  <Dropzone onDrop={acceptedFiles => dispatch(imageUpload(acceptedFiles))}>
+                    {({getRootProps, getInputProps}) => (
+                        <section>
+                          <div {...getRootProps()}>
+                            <input {...getInputProps()} />
+                            <p>Drag 'n' drop some files here, or click to select files</p>
+                          </div>
+                        </section>
+                      )}
+                    </Dropzone>
+                  </div>
 
+                  <div className='p-2 mt-2 flex flex-wrap gap-2'>
+                    {imageState.map((image, index) => {
+                      return (
+                        <div className='relative' key={index}>
+                          <img src={image.url} width={150} height={150} /> 
+                        </div>
+                      )
+                    })}
+                  </div>
 
                         
                   <button type='submit' className='bg-green-500 rounded-lg font-medium hover:bg-green-400 py-2 px-3 mt-3'>

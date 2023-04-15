@@ -9,6 +9,7 @@ import blogCategoryReducer from "../features/blogs/blogCategorySlice"
 import colorReducer from "../features/colors/colorSlice"
 import enquiryReducer from "../features/enquiry/enquirySlice"
 import allOrdersReducer from "../features/Order/OrderSlice"
+import imageUploadReducer from "../features/uploadImages/uploadimageSlice"
 
 
 export const store = configureStore({
@@ -23,5 +24,6 @@ export const store = configureStore({
     colors : colorReducer,
     enquiry : enquiryReducer,
     orders : allOrdersReducer, 
+    imageupload : imageUploadReducer
   },
 })
