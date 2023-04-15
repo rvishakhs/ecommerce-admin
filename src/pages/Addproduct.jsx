@@ -14,6 +14,7 @@ import "react-widgets/styles.css";
 import Dropzone from 'react-dropzone'
 import { deleteImage, imageUpload } from '../features/uploadImages/uploadimageSlice';
 import {IoMdCloseCircleOutline} from "react-icons/io"
+import { addProducts } from '../features/products/productSlice';
 
 
 
@@ -46,7 +47,7 @@ const formik = useFormik({
   },
   validationSchema : schema,
   onSubmit: (values) => { 
-    alert(JSON.stringify(values));
+    dispatch(addProducts(values))
   },
 });
  
@@ -78,7 +79,6 @@ const formik = useFormik({
     })
   })
 
-  console.log(images);
 
     // For color change
     useEffect(()=> {
