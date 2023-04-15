@@ -2,17 +2,15 @@ import Inputcomponent from '../components/Inputcomponent'
 import React, { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { InboxOutlined } from '@ant-design/icons';
-import { message, Upload } from 'antd';
-import { InputNumber } from 'antd';
-import { useFormik } from 'formik';
+import { Formik, useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
-import { login } from '../features/auth/authSlice';
 import { getbrands } from '../features/brand/brandSlice';
 import { getProdCategory } from '../features/products/productCategorySlice';
 import { getcolors } from '../features/colors/colorSlice';
 import InputNumberComponent from '../components/InputNumberComponent';
+import { Multiselect } from 'react-widgets';
+import "react-widgets/styles.css";
 
 
 
@@ -24,7 +22,10 @@ function Addproduct() {
   tittle: Yup.string().required("Please enter tittle for the product"),
   description : Yup.string().required("Please enter product description "),
   price : Yup.number().required("Please enter product price "),
-  quantity : Yup.number().required("Please enter product quntity ")
+  quantity : Yup.number().required("Please enter product quntity "),
+  category : Yup.string().required("please select product category"),
+  brand : Yup.string().required("please select product brand "),
+  color : Yup.array().required("please select product colors")
 });
 
 // Implymenting formik
@@ -32,17 +33,20 @@ const formik = useFormik({
   initialValues: {
     tittle: '',
     description : '',
-    price : 1,
-    quantity : 0,
+    price : '',
+    quantity : '',
+    category : "",
+    brand : "",
+    color : [],
   },
   validationSchema : schema,
   onSubmit: (values) => { 
-    console.log(values); 
     alert(JSON.stringify(values, null, 2));
   },
 });
  
   const dispatch = useDispatch()
+  const [color, setcolor ] = useState([])
 
   useEffect(()=> {
     dispatch(getbrands())
@@ -50,9 +54,18 @@ const formik = useFormik({
     dispatch(getcolors())
   }, [])
 
+  // For color change
+  useEffect(()=> {
+    formik.values.color = color
+  }, [color])
+
+
+
   const brandState = useSelector((state)=> state.brand.brand)
   const productCategoryState = useSelector((state)=> state.prodCategory.productcategory)
   const colorstate = useSelector((state) => state.colors.color)
+
+  // Taking values for the color state
 
   
   return (
@@ -87,7 +100,7 @@ const formik = useFormik({
                     className="bg-white p-2 mt-1 rounded-lg"
                   />
                   <div className='text-sm text-red-400'>
-                      {formik.touched.description && formik.errors.description ? (
+                      {formik.touched.description ? (
                           <div>{formik.errors.description}</div>
                       ) : null}
                   </div>
@@ -95,21 +108,37 @@ const formik = useFormik({
                       {/* Brand Section */}
                       <div className='w-full'>
                         <label for="Select category" className='my-1 font-medium'>Select Brand</label>
-                        <select  className='w-full p-2 rounded-md mt-1'>
-                        <option defaultChecked  >Please Select a Brand</option>
+                        <select  
+                          id=''
+                          name="brand"
+                          value={formik.values.brand} 
+                          onChange={formik.handleChange("brand")} 
+                          onBlur={formik.handleChange("brand")} 
+                          className='w-full p-2 rounded-md mt-1'>
+                            <option defaultChecked disabled >{" "}</option>
                         {brandState.map((brand, index )=> {
                           return (
                             <option key={index}>{brand.tittle}</option>
                             )
                           })}
                         </select>
-
+                        <div className='text-sm text-red-400 pl-2'>
+                        {formik.touched.brand && formik.errors.brand ? (
+                            <div>{formik.errors.brand}</div>
+                        ) : null}
+                        </div>
                       </div>
                       {/* Category Section */}
                       <div className='w-full'>
-                        <label for="Select category" className='my-1 font-medium'>Select Category</label>
-                        <select id='' className='w-full p-2 rounded-md mt-1'>
-                            <option defaultChecked  >Please Select one Category</option>
+                        <label for="Select category" className='my-1 font-medium'>Select Category *</label>
+                        <select 
+                          id=''
+                          name="category"
+                          value={formik.values.category} 
+                          onChange={formik.handleChange("category")} 
+                          onBlur={formik.handleChange("category")} 
+                          className='w-full p-2 rounded-md mt-1'>
+                            <option defaultChecked disabled >{" "}</option>
                           {productCategoryState.map((product, index) => {
                             return (
                               <>
@@ -118,21 +147,34 @@ const formik = useFormik({
                             )
                           })}
                         </select>
+                        <div className='text-sm text-red-400 pl-2'>
+                        {formik.touched.category && formik.errors.category ? (
+                            <div>{formik.errors.category}</div>
+                        ) : null}
+                        </div>
                       </div>
+
 
                       {/* Color Section  */}
                       <div className='flex flex-col w-full'>
                         <label for="Select category" className='my-1 font-medium'>Select Color</label>
-                        <select id='' className='w-full p-2 rounded-md mt-1'>
-                            <option defaultChecked  >Please Select one color</option>
-                          {colorstate.map((color, index) => {
-                            return (
-                              <>
-                                <option key={index} >{color.tittle}</option>
-                              </>
-                            )
+                        <Multiselect
+                          dataKey="id"
+                          textField="color"
+                          name="color"
+                          defaultValue={[]}
+                          className='w-full flex-row'
+                          value={color}
+                          onChange={(e) => setcolor(e)}
+                          data={colorstate.map((color, index) => {
+                            return  {id : index + 1 , color : color.tittle}
                           })}
-                        </select>
+                        />
+                        <div className='text-sm text-red-400'>
+                            {formik.errors.color ?(
+                                <div>{formik.errors.color}</div>
+                            ) : null}
+                        </div>
                       </div>
                      
 
