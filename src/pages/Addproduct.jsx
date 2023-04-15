@@ -28,7 +28,8 @@ function Addproduct() {
   quantity : Yup.number().required("Please enter product quntity "),
   category : Yup.string().required("please select product category"),
   brand : Yup.string().required("please select product brand "),
-  color : Yup.array().required("please select product colors")
+  color : Yup.array().required("please select product colors"),
+  image : Yup.array()
 });
 
 // Implymenting formik
@@ -41,10 +42,11 @@ const formik = useFormik({
     category : "",
     brand : "",
     color : [],
+    image : []
   },
   validationSchema : schema,
   onSubmit: (values) => { 
-    alert(JSON.stringify(values, null, 2));
+    alert(JSON.stringify(values));
   },
 });
  
@@ -57,10 +59,8 @@ const formik = useFormik({
     dispatch(getcolors())
   }, [])
 
-  // For color change
-  useEffect(()=> {
-    formik.values.color = color
-  }, [color])
+
+
 
 
 
@@ -69,6 +69,23 @@ const formik = useFormik({
   const colorstate = useSelector((state) => state.colors.color)
   const imageState = useSelector((state)=> state.imageupload.images)
 
+  const images = [] 
+
+  imageState.forEach((image) => {
+    images.push({
+      public_id : image.public_id,
+      url : image.url
+    })
+  })
+
+  console.log(images);
+
+    // For color change
+    useEffect(()=> {
+      formik.values.color = color
+      formik.values.image = images 
+    }, [color, images])
+  
 
 
   // Taking values for the color state
@@ -168,7 +185,6 @@ const formik = useFormik({
                           dataKey="id"
                           textField="color"
                           name="color"
-                          defaultValue={[]}
                           className='w-full flex-row'
                           value={color}
                           onChange={(e) => setcolor(e)}
