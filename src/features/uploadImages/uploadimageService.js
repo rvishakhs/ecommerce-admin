@@ -8,18 +8,21 @@ const config = {
         'Accept'       : 'application/json'
        }
 }
-
-
+// Upload Image
 const uploadImage = async (data) => {
     const response = await axios.post(`${base_Url}upload`,data ,config);
-    console.log(response.data);
-    
+    return response.data;
+}
+// Delete image  
+const deleteImage = async (id) => {
+    const response = await axios.delete(`${base_Url}upload/${id}` ,config);
     return response.data;
 }  
 
 
 const imgUploadService = {
-    uploadImage
+    uploadImage,
+    deleteImage
 }
 
 export default imgUploadService 

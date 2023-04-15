@@ -12,7 +12,8 @@ import InputNumberComponent from '../components/InputNumberComponent';
 import { Multiselect } from 'react-widgets';
 import "react-widgets/styles.css";
 import Dropzone from 'react-dropzone'
-import { imageUpload } from '../features/uploadImages/uploadimageSlice';
+import { deleteImage, imageUpload } from '../features/uploadImages/uploadimageSlice';
+import {IoMdCloseCircleOutline} from "react-icons/io"
 
 
 
@@ -238,11 +239,18 @@ const formik = useFormik({
                     </Dropzone>
                   </div>
 
-                  <div className='p-2 mt-2 flex flex-wrap gap-2'>
+                  <div className='p-2 relative mt-2 flex flex-wrap gap-2'>
                     {imageState.map((image, index) => {
                       return (
-                        <div className='relative' key={index}>
-                          <img src={image.url} width={150} height={150} /> 
+                        <div className='relative w-[150px] group h-[150px] border border-gray-100 rounded-md'  key={index}>
+                          <img src={image.url} className='object-contain  w-[150px] h-[150px]' /> 
+                          <button 
+                            type='button' 
+                            onClick={()=> dispatch(deleteImage(image.public_id))}
+                            className='absolute top-1 right-1'
+                          >
+                            <IoMdCloseCircleOutline className=' w-5 h-5 group-hover:opacity-100 hover:scale-105 opacity-0 group '/>
+                          </button>
                         </div>
                       )
                     })}
