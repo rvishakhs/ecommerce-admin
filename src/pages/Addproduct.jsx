@@ -40,16 +40,16 @@ function Addproduct() {
   const imageState = useSelector((state)=> state.imageupload.images)
   const newProduct = useSelector((state)=> state.product)
 
-  const {isSuccess, isError, isLoading, product} = newProduct
+  const {isSucess, isError, isLoading, product} = newProduct
 
   useEffect(()=> {
-    if(isSuccess ) {
+    if(isSucess && product ) {
       toast.success('Product added successfully') 
     } 
     if(isError ) {
       toast.error('Oops !! Something went wrong');
     }
-  }, [isSuccess, isError, isLoading,])
+  }, [isSucess, isError, isLoading, product])
   const images = [] 
   const coloropt = []
 
@@ -84,10 +84,9 @@ const formik = useFormik({
   },
   validationSchema : schema,
   onSubmit: (values) => { 
-    dispatch(addProducts(values))
-    formik.handleReset()
-    setcolor([])
-    images = []
+    dispatch(addProducts(values));
+    formik.handleReset();
+    window.location.reload()
   },
 });
   useEffect(()=> {
@@ -294,7 +293,7 @@ const formik = useFormik({
                   </div>
                       {/* Image displaying */}
                   <div className='p-2 relative mt-2 flex flex-wrap gap-2'>
-                    {imageState.map((image, index) => {
+                    {imageState?.map((image, index) => {
                       return (
                         <div key={index} className='relative w-[150px] group h-[150px] border border-gray-100 rounded-md'>
                           <img src={image.url} className='object-contain  w-[150px] h-[150px]' /> 
