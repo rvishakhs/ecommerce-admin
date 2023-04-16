@@ -15,25 +15,30 @@ import Dropzone from 'react-dropzone'
 import { deleteImage, imageUpload } from '../features/uploadImages/uploadimageSlice';
 import {IoMdCloseCircleOutline} from "react-icons/io"
 import { addProducts } from '../features/products/productSlice';
+import { createproduct } from '../features/products/productCreateSlice';
 
 
 
 
 function Addproduct() {
-
-   // Yup validation
+  
+  // Yup validation
  let schema = Yup.object().shape({
-  tittle: Yup.string().required("Please enter tittle for the product"),
-  description : Yup.string().required("Please enter product description "),
-  price : Yup.number().required("Please enter product price "),
-  quantity : Yup.number().required("Please enter product quntity "),
-  category : Yup.string().required("please select product category"),
-  brand : Yup.string().required("please select product brand "),
-  color : Yup.array().required("please select product colors"),
-  image : Yup.array()
-});
+   tittle: Yup.string().required("Please enter tittle for the product"),
+   description : Yup.string().required("Please enter product description "),
+   price : Yup.number().required("Please enter product price "),
+   quantity : Yup.number().required("Please enter product quntity "),
+   category : Yup.string().required("please select product category"),
+   brand : Yup.string().required("please select product brand "),
+   color : Yup.array().required("please select product colors"),
+   image : Yup.array()
+  });
+  
+  const dispatch = useDispatch()
+  const [color, setcolor ] = useState([])
 
-// Implymenting formik
+
+  // Implymenting formik
 const formik = useFormik({
   initialValues: {
     tittle: '',
@@ -47,12 +52,10 @@ const formik = useFormik({
   },
   validationSchema : schema,
   onSubmit: (values) => { 
-    dispatch(addProducts(values))
+    dispatch(createproduct(values))
   },
 });
  
-  const dispatch = useDispatch()
-  const [color, setcolor ] = useState([])
 
   useEffect(()=> {
     dispatch(getbrands())
