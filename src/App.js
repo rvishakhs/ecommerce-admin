@@ -19,6 +19,7 @@ import Forgetpassword from "./pages/Forgetpassword";
 import Login from "./pages/Login";
 import Orderlist from "./pages/Orderlist";
 import Productlist from "./pages/Productlist";
+import Addcolor from "./pages/Addcolor";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
                 <Route path="category" element={<Categorylist/>}/>
                 <Route path="brands" element={<Brands/>}/>
                 <Route path="colors" element={<ColorList/>}/>
+                <Route path="addcolor" element={<Addcolor/>}/>
                 <Route path="customers" element={<Customers/>}/>
                 <Route path="addbrand" element={<Addbrands/>}/>
                 <Route path="addcategory" element={<Addcategory/>}/>

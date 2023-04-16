@@ -112,7 +112,7 @@ const Mainui = () => {
                 label: 'Colors',
               },
                 {
-                key: 'addcolors',
+                key: 'addcolor',
                 icon: <MdOutlineFormatColorFill className='w-5 h-5' />,
                 label: 'Add-Color',
               },

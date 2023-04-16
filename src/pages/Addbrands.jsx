@@ -18,7 +18,6 @@ function Addbrands() {
  const newBrand = useSelector((state)=> state.brand)  // Toast related
  const {isSucess, isError, isLoading, createdBrand} = newBrand //Toast related
 
- console.log(newBrand);
  // React Toast section 
  useEffect(()=> {
    if(isSucess && createdBrand ) {
