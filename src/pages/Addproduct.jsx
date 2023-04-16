@@ -38,10 +38,10 @@ function Addproduct() {
   const productCategoryState = useSelector((state)=> state.prodCategory.productcategory)
   const colorstate = useSelector((state) => state.colors.color)
   const imageState = useSelector((state)=> state.imageupload.images)
-  const newProduct = useSelector((state)=> state.product)
+  const newProduct = useSelector((state)=> state.product)  // Toast related
+  const {isSucess, isError, isLoading, product} = newProduct //Toast related
 
-  const {isSucess, isError, isLoading, product} = newProduct
-
+  // React Toast section 
   useEffect(()=> {
     if(isSucess && product ) {
       toast.success('Product added successfully') 
@@ -51,15 +51,16 @@ function Addproduct() {
     }
   }, [isSucess, isError, isLoading, product])
   const images = [] 
-  const coloropt = []
+  const coloropt = [] 
 
+  //Adding images to an array from the redux state
   imageState.forEach((image) => {
     images.push({
       public_id : image.public_id,
       url : image.url
     })
   })
-
+ //Adding color to an array from the redux state
   colorstate.forEach((color) => {
     coloropt.push({
       label: color.tittle,
