@@ -2,7 +2,7 @@ import React from 'react'
 
 function Inputcomponent({type, id, placeholder, label, name, val, onCH, className}) {
   return (
-    <div class="form-floating">
+    <div className="form-floating">
         <input 
             type={type}
             name={name}

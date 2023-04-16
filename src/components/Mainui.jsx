@@ -4,6 +4,8 @@ import {
   MenuUnfoldOutlined,
 
 } from '@ant-design/icons';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {BsPeople} from "react-icons/bs"
 import {AiOutlineDashboard, AiOutlineFileSearch} from "react-icons/ai"
 import {CgFolderAdd, CgFolder, CgDuplicate } from "react-icons/cg"
@@ -224,6 +226,18 @@ const Mainui = () => {
         </Header>
           <main className='mt-4 mb-2 mx-2'>
               <Outlet />
+      <ToastContainer 
+        position="bottom-center"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
           </main>
       </Layout>
     </Layout>

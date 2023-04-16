@@ -2,23 +2,20 @@ import Inputcomponent from '../components/Inputcomponent'
 import React, { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { Formik, useFormik } from 'formik';
+import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { getbrands } from '../features/brand/brandSlice';
 import { getProdCategory } from '../features/products/productCategorySlice';
 import { getcolors } from '../features/colors/colorSlice';
 import InputNumberComponent from '../components/InputNumberComponent';
-import { Multiselect } from 'react-widgets';
 import "react-widgets/styles.css";
 import Dropzone from 'react-dropzone'
 import { deleteImage, imageUpload } from '../features/uploadImages/uploadimageSlice';
 import {IoMdCloseCircleOutline} from "react-icons/io"
 import { addProducts } from '../features/products/productSlice';
-import { createproduct } from '../features/products/productCreateSlice';
-
-
-
+import { Select, Space } from 'antd';
+import { toast } from 'react-toastify';
 
 function Addproduct() {
   
@@ -30,14 +27,48 @@ function Addproduct() {
    quantity : Yup.number().required("Please enter product quntity "),
    category : Yup.string().required("please select product category"),
    brand : Yup.string().required("please select product brand "),
-   color : Yup.array().required("please select product colors"),
+   color : Yup.array().min(1, "please select atleast one color").required("please select product colors"),           
    image : Yup.array()
   });
   
   const dispatch = useDispatch()
   const [color, setcolor ] = useState([])
 
+  const brandState = useSelector((state)=> state.brand.brand)
+  const productCategoryState = useSelector((state)=> state.prodCategory.productcategory)
+  const colorstate = useSelector((state) => state.colors.color)
+  const imageState = useSelector((state)=> state.imageupload.images)
+  const newProduct = useSelector((state)=> state.product)
 
+  const {isSuccess, isError, isLoading, product} = newProduct
+
+  useEffect(()=> {
+    if(isSuccess ) {
+      toast.success('Product added successfully') 
+    } 
+    if(isError ) {
+      toast.error('Oops !! Something went wrong');
+    }
+  }, [isSuccess, isError, isLoading,])
+  const images = [] 
+  const coloropt = []
+
+  imageState.forEach((image) => {
+    images.push({
+      public_id : image.public_id,
+      url : image.url
+    })
+  })
+
+  colorstate.forEach((color) => {
+    coloropt.push({
+      label: color.tittle,
+      value : color._id
+    })
+  })
+
+
+  
   // Implymenting formik
 const formik = useFormik({
   initialValues: {
@@ -47,52 +78,34 @@ const formik = useFormik({
     quantity : '',
     category : "",
     brand : "",
+    tag : "",
     color : [],
     image : []
   },
   validationSchema : schema,
   onSubmit: (values) => { 
-    dispatch(createproduct(values))
+    dispatch(addProducts(values))
+    formik.handleReset()
+    setcolor([])
+    images = []
   },
 });
- 
-
   useEffect(()=> {
     dispatch(getbrands())
     dispatch(getProdCategory())
     dispatch(getcolors())
   }, [])
 
-
-
-
-
-
-  const brandState = useSelector((state)=> state.brand.brand)
-  const productCategoryState = useSelector((state)=> state.prodCategory.productcategory)
-  const colorstate = useSelector((state) => state.colors.color)
-  const imageState = useSelector((state)=> state.imageupload.images)
-
-  const images = [] 
-
-  imageState.forEach((image) => {
-    images.push({
-      public_id : image.public_id,
-      url : image.url
-    })
-  })
-
-
     // For color change
     useEffect(()=> {
-      formik.values.color = color
+      formik.values.color = color ? color : " "
       formik.values.image = images 
     }, [color, images])
   
+    const handleChange = (e) => {
+      setcolor(e)
 
-
-  // Taking values for the color state
-
+    }
   
   return (
     <div>
@@ -184,19 +197,25 @@ const formik = useFormik({
                       {/* Color Section  */}
                       <div className='flex flex-col w-full'>
                         <label for="Select category" className='my-1 font-medium'>Select Color</label>
-                        <Multiselect
-                          dataKey="id"
-                          textField="color"
-                          name="color"
-                          className='w-full flex-row'
-                          value={color}
-                          onChange={(e) => setcolor(e)}
-                          data={colorstate.map((color, index) => {
-                            return  {id : index + 1 , color : color.tittle}
-                          })}
-                        />
+                        <Space
+                          style={{
+                            width: '100%',
+                          }}
+                          direction="vertical"
+                        >
+                          <Select
+                            mode="multiple"
+                            allowClear
+                            className='w-full'
+                            placeholder="Select color"
+                            onChange={(e) =>handleChange(e)}
+                            defaultValue={color}
+                            options= {coloropt}
+                            />
+                        </Space>
+                      
                         <div className='text-sm text-red-400'>
-                            {formik.errors.color ?(
+                            {formik.errors.color && formik.touched.color ?(
                                 <div>{formik.errors.color}</div>
                             ) : null}
                         </div>
@@ -240,10 +259,26 @@ const formik = useFormik({
                             ) : null}
                           </div>
                       </div>
-
+                       {/* Tags Section */}
+                       <div className='w-[35%]'>
+                        <label for="Select category" className='my-1 font-medium'>Select Tag *</label>
+                        <select 
+                          id=''
+                          name="category"
+                          value={formik.values.tag} 
+                          onChange={formik.handleChange("tag")} 
+                          className='w-full p-2 rounded-md mt-1'>
+                            <option defaultChecked disabled >{" "}</option>
+                            <option defaultChecked value="Featured" >Featured</option>
+                            <option defaultChecked value="Popular" >Popular </option>
+                            <option defaultChecked value="Special Offers" >Special </option>                              
+                        </select>
+  
+                      </div>
                   </div>
 
-              
+                     
+                  {/* Image Upload */}
                   <label for="Select category" className='my-2 font-medium'>Upload Image</label>
                   <div className='w-full p-5 flex text-center justify-center border border-gray-300 bg-white'>
                   <Dropzone onDrop={acceptedFiles => dispatch(imageUpload(acceptedFiles))}>
@@ -257,11 +292,11 @@ const formik = useFormik({
                       )}
                     </Dropzone>
                   </div>
-
+                      {/* Image displaying */}
                   <div className='p-2 relative mt-2 flex flex-wrap gap-2'>
                     {imageState.map((image, index) => {
                       return (
-                        <div className='relative w-[150px] group h-[150px] border border-gray-100 rounded-md'  key={index}>
+                        <div key={index} className='relative w-[150px] group h-[150px] border border-gray-100 rounded-md'>
                           <img src={image.url} className='object-contain  w-[150px] h-[150px]' /> 
                           <button 
                             type='button' 
@@ -275,8 +310,11 @@ const formik = useFormik({
                     })}
                   </div>
 
-                        
-                  <button type='submit' className='bg-green-500 rounded-lg font-medium hover:bg-green-400 py-2 px-3 mt-3'>
+                {/* Submit Button  */}
+                  <button 
+                    type='submit' 
+                    className='bg-green-500 rounded-lg font-medium hover:bg-green-400 py-2 px-3 mt-3'
+                  >
                     Add Product  
                   </button>     
                 
