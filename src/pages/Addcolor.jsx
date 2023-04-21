@@ -4,10 +4,11 @@ import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
-import { addProdCategory } from '../features/products/productCategorySlice';
 import { addcolor } from '../features/colors/colorSlice';
 
 function Addcolor() {
+
+
    // Yup validation
  let schema = Yup.object().shape({
   tittle: Yup.string().required("Enter color name"),
@@ -37,6 +38,8 @@ function Addcolor() {
     formik.handleReset();
   },
 });
+
+
     
   return (
     <div>
