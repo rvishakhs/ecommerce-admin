@@ -3,22 +3,27 @@ import React, { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { getblogs } from '../features/blogs/blogSlice';
 import { getblogCategory } from '../features/blogs/blogCategorySlice';
+import {creatBlog} from "../features/blogs/blogSlice";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { deleteImage, imageUpload } from '../features/uploadImages/uploadimageSlice';
+import Dropzone from 'react-dropzone'
+import {IoMdCloseCircleOutline} from "react-icons/io"
+
 
 function Addblog() {
 
   const dispatch = useDispatch()
   const blogstate = useSelector((state) => state.blogCategory.blogcategory)
+  const imageState = useSelector((state)=> state.imageupload.images)
 
     // Yup validation
  let schema = Yup.object().shape({
   tittle: Yup.string().required("Please enter tittle for the Blog"),
   category : Yup.string().required("Please Select one category"),
   description : Yup.string().required("Please enter blog description "),
-
+  image : Yup.array()
  });
 
  // Implymenting formik
@@ -27,19 +32,33 @@ const formik = useFormik({
     tittle: "",
     category : "",
     description : '',
+    image : []
   },
   validationSchema : schema,
   onSubmit: (values) => { 
-    alert(JSON.stringify(values))
+    dispatch(creatBlog(values))
     formik.handleReset();
+    window.location.reload()
   },
 });
 
   useEffect(()=> {
     dispatch(getblogCategory())
   }, [])
+  const images = [] 
 
-  const [value, setValue] = useState("")
+  // Adding images from redux for passing in to formik 
+  imageState.forEach((image) => {
+     images.push({
+      public_id : image.public_id,
+      url : image.url
+     }) 
+  });
+
+    // For color change and image upload
+  useEffect(()=> {
+    formik.values.image = images
+  }, [images])
   
     
   return (
@@ -88,7 +107,35 @@ const formik = useFormik({
 
                   {/* Image Uploading */}
                   <label for="Select category" className='my-2 font-medium'>Upload Image</label>
-                 
+                  <div className='w-full p-5 flex text-center justify-center border border-gray-300 bg-white'>
+                  <Dropzone onDrop={acceptedFiles => dispatch(imageUpload(acceptedFiles))}>
+                    {({getRootProps, getInputProps}) => (
+                        <section>
+                          <div {...getRootProps()}>
+                            <input {...getInputProps()} />
+                            <p>Drag 'n' drop some files here, or click to select files</p>
+                          </div>
+                        </section>
+                      )}
+                    </Dropzone>
+                  </div>
+                 {/* Image displaying */}
+                 <div className='p-2 relative mt-2 flex flex-wrap gap-2'>
+                    {imageState?.map((image, index) => {
+                      return (
+                        <div key={index} className='relative w-[150px] group h-[150px] border border-gray-100 rounded-md'>
+                          <img src={image.url} className='object-contain  w-[150px] h-[150px]' /> 
+                          <button 
+                            type='button' 
+                            onClick={()=> dispatch(deleteImage(image.public_id))}
+                            className='absolute top-1 right-1'
+                          >
+                            <IoMdCloseCircleOutline className=' w-5 h-5 group-hover:opacity-100 hover:scale-105 opacity-0 group '/>
+                          </button>
+                        </div>
+                      )
+                    })}
+                  </div>
                  {/* Description Part */}
                   <label for="Select category" className='mt-2 font-medium'>Blog Content area</label>
                   

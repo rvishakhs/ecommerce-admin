@@ -96,7 +96,7 @@ const formik = useFormik({
     dispatch(getcolors())
   }, [])
 
-    // For color change
+    // For color change and image upload
     useEffect(()=> {
       formik.values.color = color ? color : " "
       formik.values.image = images 
