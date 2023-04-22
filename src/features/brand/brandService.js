@@ -28,11 +28,19 @@ const getabrand = async (id) => {
     return response.data;
 }  
 
+// Updating a brand
+const updatingBrand = async (brand) => {
+    const response = await axios.put(`${base_Url}brand/${brand.id}`, brand.branddata, config );
+
+    return response.data;
+}  
+
 
 const brandService = {
     getBrands,
     createBrand,
-    getabrand
+    getabrand,
+    updatingBrand
 }
 
 export default brandService 

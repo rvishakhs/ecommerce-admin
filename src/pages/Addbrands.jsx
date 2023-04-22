@@ -3,14 +3,15 @@ import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
-import { addBrand, getabrand, resetState } from '../features/brand/brandSlice';
+import { addBrand, getabrand, resetState, updatebrand } from '../features/brand/brandSlice';
 import { toast } from 'react-toastify';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 function Addbrands() {
   
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   // Yup validation
  let schema = Yup.object().shape({
   tittle: Yup.string().required("Brand tittle is required"),
@@ -18,7 +19,7 @@ function Addbrands() {
     
  //  Toast notification
   const newBrand = useSelector((state)=> state.brand)  // Toast related
-  const {isSucess, isError, isLoading, createdBrand, brandName} = newBrand //Toast related
+  const {isSucess, isError, isLoading, createdBrand, brandName, updatedBrand} = newBrand //Toast related
 //  this section is for updating the brand 
  const location = useLocation();
  const getbrandid = location.pathname.split("/")[3]
@@ -31,16 +32,14 @@ function Addbrands() {
     }
  }, [getbrandid])
 
-
-
-
-
-
  // React Toast section 
  useEffect(()=> {
    if(isSucess && createdBrand ) {
      toast.success('Brand added successfully') 
    } 
+   if( updatedBrand && isSucess) {
+     toast.success('Brand updated successfully') 
+   }
    if(isError ) {
      toast.error('Oops !! Something went wrong');
    }
@@ -55,11 +54,20 @@ const formik = useFormik({
   },
   validationSchema : schema,
   onSubmit: (values) => { 
-    dispatch(addBrand(values));
-    formik.handleReset();
-    setTimeout(()=> {
-      dispatch(resetState())
-    }, 2000)
+    if(getbrandid !== undefined) { 
+      dispatch(updatebrand({id: getbrandid, branddata : values}))
+      setTimeout(()=> {
+        navigate("/admin/brands")
+        dispatch(resetState())
+      }, 1000)
+       
+    } else {
+      dispatch(addBrand(values));
+      formik.handleReset();
+      setTimeout(()=> {
+        dispatch(resetState())
+      }, 2000)
+    }
   },
 });
 
