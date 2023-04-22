@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import {  Table } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { getbrands } from '../features/brand/brandSlice';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {FiEdit} from 'react-icons/fi'
 import {AiOutlineDelete} from 'react-icons/ai'
 import moment from 'moment';
@@ -36,7 +36,6 @@ function Brands() {
     ]
 
     const dispatch = useDispatch();
-
     useEffect(()=>{
       dispatch(getbrands())
     }, [])
@@ -52,8 +51,7 @@ function Brands() {
                 createdAt : moment( brandState[i].createdAt).format("MMM Do YY"),
                 action : (
                   <div className='flex flex-row space-x-2'>
-
-                    <Link to="/">
+                    <Link to={`/admin/brands/${brandState[i]._id}`}>
                       <FiEdit className='w-5 h-5'/>
                     </Link>
                     <Link to="/">

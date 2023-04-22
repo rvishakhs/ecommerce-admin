@@ -23,6 +23,16 @@ export const getbrands = createAsyncThunk("brand/getbrands", async (thunkAPI)=>{
     }
 })
 
+// Getting a single brand
+export const getabrand = createAsyncThunk("brand/get-brand", async (id, thunkAPI)=>{
+    try {
+         return await brandService.getabrand(id)
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err)
+    }
+})
+
+
 // Creating new brand in to DB
 
 export const addBrand = createAsyncThunk("brand/create", async (values, thunkAPI)=>{
@@ -71,6 +81,22 @@ export const brandSlice = createSlice({
 
         })
         .addCase(addBrand.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSucess = false;
+            state.message = action.error;
+        }) 
+        .addCase(getabrand.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(getabrand.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSucess = true;
+            state.brandName = action.payload.tittle;
+
+        })
+        .addCase(getabrand.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSucess = false;

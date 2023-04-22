@@ -3,20 +3,38 @@ import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
-import { addBrand, resetState } from '../features/brand/brandSlice';
+import { addBrand, getabrand, resetState } from '../features/brand/brandSlice';
 import { toast } from 'react-toastify';
+import { useLocation } from 'react-router-dom';
 
 
 function Addbrands() {
   
+  const dispatch = useDispatch()
   // Yup validation
  let schema = Yup.object().shape({
   tittle: Yup.string().required("Brand tittle is required"),
  });
     
- const dispatch = useDispatch()
- const newBrand = useSelector((state)=> state.brand)  // Toast related
- const {isSucess, isError, isLoading, createdBrand} = newBrand //Toast related
+ //  Toast notification
+  const newBrand = useSelector((state)=> state.brand)  // Toast related
+  const {isSucess, isError, isLoading, createdBrand, brandName} = newBrand //Toast related
+//  this section is for updating the brand 
+ const location = useLocation();
+ const getbrandid = location.pathname.split("/")[3]
+
+ useEffect(()=> {
+    if(getbrandid !== undefined){
+      dispatch(getabrand(getbrandid))
+    } else {
+      dispatch(resetState())
+    }
+ }, [getbrandid])
+
+
+
+
+
 
  // React Toast section 
  useEffect(()=> {
@@ -30,8 +48,9 @@ function Addbrands() {
 
  // Implymenting formik
 const formik = useFormik({
+  enableReinitialize : true,
   initialValues: {
-    tittle: '',
+    tittle: brandName || '',
 
   },
   validationSchema : schema,
@@ -49,7 +68,7 @@ const formik = useFormik({
     <div>
         <>
         <div className='mt-3 mx-2 py-2 h-[82vh] overflow-y-scroll '>
-            <h2 className='font-bold text-xl tracking-wide px-3 py-2 '>Add New Brand</h2>
+            <h2 className='font-bold text-xl tracking-wide px-3 py-2 '>{getbrandid !== undefined ? "Edit " : "Add New"} Brand</h2>
             <div className='px-3 py-2 w-[80%] '>
                 <form onSubmit={formik.handleSubmit}>
                   <label for="Select category" className='my-1 font-medium'>Brand Name</label>
@@ -69,7 +88,7 @@ const formik = useFormik({
                   <button 
                   type='submit'   
                   className='bg-green-500 rounded-lg font-medium hover:bg-green-400 py-2 px-3 mt-3'>
-                    Add Brand
+                    {getbrandid !== undefined ? "Update " : "Add "}Brand
                   </button>     
                 
                 </form>
