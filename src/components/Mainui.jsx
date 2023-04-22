@@ -11,6 +11,7 @@ import {AiOutlineDashboard, AiOutlineFileSearch} from "react-icons/ai"
 import {CgFolderAdd, CgFolder, CgDuplicate } from "react-icons/cg"
 import {BiCategoryAlt} from "react-icons/bi"
 import {ImBooks, ImProfile} from "react-icons/im"
+import { RiCouponLine, RiCoupon3Line} from "react-icons/ri"
 import {GiNotebook} from "react-icons/gi"
 import {BsBell} from "react-icons/bs"
 import {FiLogOut} from "react-icons/fi"
@@ -22,7 +23,6 @@ import {RiLockPasswordLine} from "react-icons/ri"
 import { Layout, Menu, theme } from 'antd';
 import React, { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { Dropdown, Space } from 'antd';
 const { Header, Sider } = Layout;
 
 
@@ -148,6 +148,23 @@ const Mainui = () => {
                   icon: <GiNotebook className='w-5 h-5' />,
                   label: 'Add-Blog Categories',
                 }
+              ]
+            },
+            {
+              key: 'marketing',
+              icon: <RiCouponLine className='w-5 h-5' />,
+              label: 'Marketing',
+              children: [
+                {
+                  key: 'coupons',
+                  icon: <RiCouponLine className='w-5 h-5' />,
+                  label: 'Coupons',
+                },
+                {
+                  key: 'addcoupons',
+                  icon: <RiCoupon3Line className='w-5 h-5' />,
+                  label: 'Add-Coupons',
+                },
               ]
             },
             {
