@@ -13,7 +13,7 @@ import "react-widgets/styles.css";
 import Dropzone from 'react-dropzone'
 import { deleteImage, imageUpload } from '../features/uploadImages/uploadimageSlice';
 import {IoMdCloseCircleOutline} from "react-icons/io"
-import { addProducts } from '../features/products/productSlice';
+import { addProducts, resetState } from '../features/products/productSlice';
 import { Select, Space } from 'antd';
 import { toast } from 'react-toastify';
 
@@ -39,17 +39,17 @@ function Addproduct() {
   const colorstate = useSelector((state) => state.colors.color)
   const imageState = useSelector((state)=> state.imageupload.images)
   const newProduct = useSelector((state)=> state.product)  // Toast related
-  const {isSucess, isError, isLoading, product} = newProduct //Toast related
+  const {isSucess, isError, isLoading, newproduct} = newProduct //Toast related
 
   // React Toast section 
   useEffect(()=> {
-    if(isSucess && product ) {
+    if(isSucess && newproduct ) {
       toast.success('Product added successfully') 
     } 
     if(isError ) {
       toast.error('Oops !! Something went wrong');
     }
-  }, [isSucess, isError, isLoading, product])
+  }, [isSucess, isError, isLoading])
   const images = [] 
   const coloropt = [] 
 
@@ -87,7 +87,10 @@ const formik = useFormik({
   onSubmit: (values) => { 
     dispatch(addProducts(values));
     formik.handleReset();
-    window.location.reload()
+    setTimeout(()=> {
+      dispatch(resetState())
+      window.location.reload()
+    }, 2500)
   },
 });
   useEffect(()=> {

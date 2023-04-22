@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
-import { addBrand } from '../features/brand/brandSlice';
+import { addBrand, resetState } from '../features/brand/brandSlice';
 import { toast } from 'react-toastify';
 
 
@@ -38,6 +38,9 @@ const formik = useFormik({
   onSubmit: (values) => { 
     dispatch(addBrand(values));
     formik.handleReset();
+    setTimeout(()=> {
+      dispatch(resetState())
+    }, 2000)
   },
 });
 

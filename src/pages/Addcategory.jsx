@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
-import { addProdCategory } from '../features/products/productCategorySlice';
+import { addProdCategory, resetState } from '../features/products/productCategorySlice';
 
 function Addcategory() {
    // Yup validation
@@ -18,7 +18,7 @@ function Addcategory() {
 
   // React Toast section 
   useEffect(()=> {
-    if(isSucess && newProductCategory ) {
+    if(isSucess && newproductCategory ) {
       toast.success('Product Category added successfully') 
     } 
     if(isError ) {
@@ -34,6 +34,9 @@ function Addcategory() {
   onSubmit: (values) => { 
     dispatch(addProdCategory(values));
     formik.handleReset();
+    setTimeout(() => {
+      dispatch(resetState())
+    }, 2000)
   },
 });
     

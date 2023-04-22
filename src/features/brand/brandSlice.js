@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import brandService from "./brandService";
 
 
@@ -7,7 +7,6 @@ import brandService from "./brandService";
 
 const initialState = {
     brand : [],
-    createdBrand : [],
     isLoading : false ,
     isError : false,
     isSucess : false,
@@ -34,6 +33,9 @@ export const addBrand = createAsyncThunk("brand/create", async (values, thunkAPI
 
     }
 })
+
+// FOR RESETTING INTO initial state
+export const resetState = createAction("reset_all")
 
 
 export const brandSlice = createSlice({
@@ -74,6 +76,7 @@ export const brandSlice = createSlice({
             state.isSucess = false;
             state.message = action.error;
         }) 
+        .addCase(resetState, () => initialState)
     },
 })
 

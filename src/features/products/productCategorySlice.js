@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import productCategoryService from "./productCategoryService";
 
 
@@ -7,7 +7,6 @@ import productCategoryService from "./productCategoryService";
 
 const initialState = {
     productcategory : [],
-    newproductCategory : [],
     isLoading : false ,
     isError : false,
     isSucess : false,
@@ -32,6 +31,9 @@ export const addProdCategory = createAsyncThunk("product/createproductcategory",
 
     }
 })
+
+// FOR RESETTING INTO initial state
+export const resetState = createAction("reset_all")
 
 
 export const productCategorySlice = createSlice({
@@ -72,6 +74,7 @@ export const productCategorySlice = createSlice({
             state.isSucess = false;
             state.message = action.error;
         }) 
+        .addCase(resetState, () => initialState)
     },
 })
 

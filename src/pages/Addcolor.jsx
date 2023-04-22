@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
-import { addcolor } from '../features/colors/colorSlice';
+import { addcolor, resetState } from '../features/colors/colorSlice';
 
 function Addcolor() {
 
@@ -36,6 +36,9 @@ function Addcolor() {
   onSubmit: (values) => { 
     dispatch(addcolor(values));
     formik.handleReset();
+    setTimeout(()=> {
+      dispatch(resetState())
+    }, 2000)
   },
 });
 
