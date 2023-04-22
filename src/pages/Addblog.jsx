@@ -1,34 +1,23 @@
 import Inputcomponent from '../components/Inputcomponent'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { InboxOutlined } from '@ant-design/icons';
-import { message, Upload } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { getblogs } from '../features/blogs/blogSlice';
+import { getblogCategory } from '../features/blogs/blogCategorySlice';
 
 
 function Addblog() {
+
+  const dispatch = useDispatch()
+  const blogstate = useSelector((state) => state.blogCategory.blogcategory)
+
+  useEffect(()=> {
+    dispatch(getblogCategory())
+  }, [])
+
+  const [value, setValue] = useState("")
   
-  const props = {
-    name: 'file',
-    multiple: true,
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-    onChange(info) {
-      const { status } = info.file;
-      if (status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
-      if (status === 'done') {
-        message.success(`${info.file.name} file uploaded successfully.`);
-      } else if (status === 'error') {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-    onDrop(e) {
-      console.log('Dropped files', e.dataTransfer.files);
-    },
-  };
-  const { Dragger } = Upload;
-  const [value, setValue] = useState('');
     
   return (
     <div>
@@ -41,21 +30,14 @@ function Addblog() {
                   <Inputcomponent type="text" id="tittle" label="Blog Tittle"/>
                   <label for="Select category" className='my-1 font-medium'>Select Blog Category</label>
                   <select id='' className='w-full p-2 rounded-md mt-1'>
-                    <option>Select the blog category1</option>
-                    <option>Select the blog category2</option>
-                    <option>Select the blog category3</option>
+                    {blogstate.map((blogCat, index) => {
+                      return (
+                        <option key={index}>{blogCat.tittle}</option>
+                      )
+                    })}
                   </select>
                   <label for="Select category" className='my-2 font-medium'>Upload Image</label>
-                  <Dragger  {...props}>
-                    <p className="ant-upload-drag-icon">
-                      <InboxOutlined />
-                    </p>
-                    <p className="ant-upload-text">Click or drag file to this area to upload</p>
-                    <p className="ant-upload-hint">
-                      Support for a single or bulk upload. Strictly prohibited from uploading company data or other
-                      banned files.
-                    </p>
-                </Dragger>
+                 
                   <label for="Select category" className='mt-2 font-medium'>Blog Content area</label>
                   <ReactQuill 
                     theme="snow" 

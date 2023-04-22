@@ -10,7 +10,7 @@ function Addblogcategory() {
 
    // Yup validation
  let schema = Yup.object().shape({
-  tittle: Yup.string().required("Enter a brand Category"),
+  tittle: Yup.string().required("Please Enter a blog Category"),
  });
 
  const dispatch = useDispatch()
