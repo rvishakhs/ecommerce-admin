@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import blogService from "./blogService";
 
 
@@ -34,6 +34,8 @@ export const creatBlog = createAsyncThunk("blog/create-blog", async (values, thu
     }
 })
 
+export const resetState = createAction("reset all")
+
 
 export const blogSlice = createSlice({
     name : "blogs",
@@ -64,7 +66,7 @@ export const blogSlice = createSlice({
             state.isLoading = false;
             state.isError = false;
             state.isSucess = true;
-            state.blog = action.payload;
+            state.createdblog = action.payload;
 
         })
         .addCase(creatBlog.rejected, (state, action) => {
@@ -73,6 +75,7 @@ export const blogSlice = createSlice({
             state.isSucess = false;
             state.message = action.error;
         }) 
+        .addCase(resetState, ()=> initialState)
     },
 })
 

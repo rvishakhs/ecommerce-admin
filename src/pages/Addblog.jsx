@@ -4,11 +4,12 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { getblogCategory } from '../features/blogs/blogCategorySlice';
-import {creatBlog} from "../features/blogs/blogSlice";
+import {creatBlog, resetState} from "../features/blogs/blogSlice";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { deleteImage, imageUpload } from '../features/uploadImages/uploadimageSlice';
 import Dropzone from 'react-dropzone'
+import { toast } from 'react-toastify';
 import {IoMdCloseCircleOutline} from "react-icons/io"
 
 
@@ -17,6 +18,9 @@ function Addblog() {
   const dispatch = useDispatch()
   const blogstate = useSelector((state) => state.blogCategory.blogcategory)
   const imageState = useSelector((state)=> state.imageupload.images)
+  const blog = useSelector((state) => state.blogs)
+
+  const {isSucess, isError, isLoading, createdblog} = blog
 
     // Yup validation
  let schema = Yup.object().shape({
@@ -38,9 +42,23 @@ const formik = useFormik({
   onSubmit: (values) => { 
     dispatch(creatBlog(values))
     formik.handleReset();
-    window.location.reload()
+    setTimeout(() => {
+      dispatch(resetState())
+      window.location.reload()
+    },2500)
   },
 });
+
+// React Toast section 
+useEffect(()=> {
+  if(isSucess && createdblog ) {
+    toast.success('Blog created successfully') 
+  } 
+  if(isError ) {
+    toast.error('Oops !! Something went wrong');
+  }
+}, [isSucess, isError, isLoading])
+
 
   useEffect(()=> {
     dispatch(getblogCategory())

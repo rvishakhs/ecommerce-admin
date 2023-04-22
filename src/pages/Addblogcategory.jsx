@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
-import { createNewCategory } from '../features/blogs/blogCategorySlice';
+import { createNewCategory, resetState } from '../features/blogs/blogCategorySlice';
 
 function Addblogcategory() {
 
@@ -35,7 +35,9 @@ function Addblogcategory() {
   onSubmit: (values) => { 
     dispatch(createNewCategory(values));
     formik.handleReset();
-
+    setTimeout(()=> {
+      dispatch(resetState())
+    }, 3000)
   },
 });
 

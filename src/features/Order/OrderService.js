@@ -11,8 +11,7 @@ const config = {
 }
 
 const getAllOrders = async ( ) => {
-    const response = await axios.get(`${base_Url}user/allorders`, config);
-    
+    const response = await axios.get(`${base_Url}user/allorders`, config); 
     return response.data;
 }  
 

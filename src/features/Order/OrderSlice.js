@@ -18,7 +18,6 @@ export const getAllOrders = createAsyncThunk("orders/AllOrders", async (thunkAPI
          return await orderService.getAllOrders()
     } catch (err) {
         return thunkAPI.rejectWithValue(err)
-
     }
 })
 
