@@ -4,7 +4,8 @@ import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
-import { addProdCategory, resetState } from '../features/products/productCategorySlice';
+import { FetchaprodCategory, addProdCategory, resetState } from '../features/products/productCategorySlice';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function Addcategory() {
    // Yup validation
@@ -13,8 +14,23 @@ function Addcategory() {
  });
 
  const dispatch = useDispatch()
+ const locattion = useLocation()
+ const navigate = useNavigate()
+
+ const location = useLocation();
+ const getprodcatid = location.pathname.split("/")[3]
+
+
  const newProductCategory = useSelector((state)=> state.prodCategory)  // Toast related
- const {isSucess, isError, isLoading, newproductCategory} = newProductCategory //Toast related
+ const {isSucess, isError, isLoading, newproductCategory, categoryName} = newProductCategory //Toast related
+
+ useEffect(()=> {
+  if(getprodcatid !== undefined){
+    dispatch(FetchaprodCategory(getprodcatid))
+  } else {
+    dispatch(resetState())
+  }
+}, [getprodcatid])
 
   // React Toast section 
   useEffect(()=> {
@@ -27,16 +43,17 @@ function Addcategory() {
   }, [isSucess, isError, isLoading])
 
  const formik = useFormik({
+  enableReinitialize: true,
   initialValues: {
-    tittle: '',
+    tittle: categoryName || "" ,
   },
   validationSchema : schema,
   onSubmit: (values) => { 
-    dispatch(addProdCategory(values));
-    formik.handleReset();
-    setTimeout(() => {
-      dispatch(resetState())
-    }, 2000)
+    // dispatch(addProdCategory(values));
+    // formik.handleReset();
+    // setTimeout(() => {
+    //   dispatch(resetState())
+    // }, 2000)
   },
 });
     
@@ -44,7 +61,7 @@ function Addcategory() {
     <div>
         <>
         <div className='mt-3 mx-2 py-2 h-[82vh] overflow-y-scroll '>
-            <h2 className='font-bold text-xl tracking-wide px-3 py-2 '>Add New Category</h2>
+            <h2 className='font-bold text-xl tracking-wide px-3 py-2 '>{getprodcatid ?  "Edit"  : "Add New"}  Category</h2>
             <div className='px-3 py-2 w-[80%] '>
                 <form onSubmit={formik.handleSubmit}>
                   <label for="Select category" className='my-1 font-medium'>Category Tittile</label>
@@ -65,7 +82,7 @@ function Addcategory() {
                     type='submit'
                     className='bg-green-500 rounded-lg font-medium hover:bg-green-400 py-2 px-3 mt-3'
                   >
-                    Add Product Category  
+                   {getprodcatid ?  "Update"  : "Add New"} Category  
                   </button>     
                 
                 </form>

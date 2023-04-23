@@ -42,6 +42,8 @@ function Categorylist() {
 
     const productCategoryState = useSelector((state)=> state.prodCategory.productcategory)
 
+    console.log(productCategoryState);
+
     const tabledata = []
         for(let i = 0; i<productCategoryState.length ; i++) {
           tabledata.push({
@@ -51,7 +53,7 @@ function Categorylist() {
             action : (
               <div className='flex flex-row space-x-2'>
 
-                <Link to="/">
+                <Link to={`/admin/category/${productCategoryState[i]._id}`}>
                   <FiEdit className='w-5 h-5'/>
                 </Link>
                 <Link to="/">

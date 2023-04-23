@@ -32,6 +32,17 @@ export const addProdCategory = createAsyncThunk("product/createproductcategory",
     }
 })
 
+// Function for fetchhing single product category
+export const FetchaprodCategory = createAsyncThunk("product/getacategory", async (values, thunkAPI)=>{
+    try {
+         return await productCategoryService.FetchaprodCategory(values)
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err)
+
+    }
+})
+
+
 // FOR RESETTING INTO initial state
 export const resetState = createAction("reset_all")
 
@@ -69,6 +80,22 @@ export const productCategorySlice = createSlice({
 
         })
         .addCase(addProdCategory.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSucess = false;
+            state.message = action.error;
+        }) 
+        .addCase(FetchaprodCategory.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(FetchaprodCategory.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSucess = true;
+            state.categoryName = action.payload.tittle;
+
+        })
+        .addCase(FetchaprodCategory.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSucess = false;

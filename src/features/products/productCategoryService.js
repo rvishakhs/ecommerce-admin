@@ -21,12 +21,20 @@ const createProdCategory = async (ProdCategory) => {
     return response.data;
 }  
 
+// Fetching single Product Category
+
+const FetchaprodCategory = async (id) => {
+    const response = await axios.get(`${base_Url}category/${id}`);
+    return response.data;
+}  
+
 
 
 
 const productCategoryService = {
     getProdCategories,
-    createProdCategory
+    createProdCategory,
+    FetchaprodCategory
 }
 
 export default productCategoryService 
