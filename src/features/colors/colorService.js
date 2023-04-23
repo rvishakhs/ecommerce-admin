@@ -21,10 +21,27 @@ const createcolor = async (color) => {
 
     return response.data;
 }  
+// Fetch existing color by id 
+
+const fetchcolor = async (id) => {
+    const response = await axios.get(`${base_Url}color/${id}`);
+
+    return response.data;
+}  
+// update existing color with 
+
+const updatecolor = async (data) => {
+    const response = await axios.put(`${base_Url}color/${data.id}`, data.color, config);
+
+    return response.data;
+}  
+
 
 const colorService = {
     getColors,
-    createcolor
+    createcolor,
+    fetchcolor,
+    updatecolor
 }
 
 export default colorService 

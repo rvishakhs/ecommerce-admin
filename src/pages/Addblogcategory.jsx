@@ -4,7 +4,8 @@ import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
-import { createNewCategory, resetState } from '../features/blogs/blogCategorySlice';
+import { createNewCategory, fetchBlogCategory, resetState, updateBlogCategory } from '../features/blogs/blogCategorySlice';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function Addblogcategory() {
 
@@ -14,30 +15,58 @@ function Addblogcategory() {
  });
 
  const dispatch = useDispatch()
+ const location = useLocation()
+ const navigate = useNavigate()
+
+ const getblogcategoryid = location.pathname.split('/')[3]
+
+ useEffect(()=> {
+  if(getblogcategoryid !== undefined) {
+    dispatch(fetchBlogCategory(getblogcategoryid))
+  } else {
+    dispatch(resetState())
+  }
+ }, [])
+
+
+
  const blogcategories = useSelector((state)=> state.blogCategory)  // Toast related
- const {isSucess, isError, isLoading, newblogcategory } = blogcategories  //Toast related
+ const {isSucess, isError, isLoading, newblogcategory, updatedBlogCategory, blogcategoryName } = blogcategories  //Toast related
 
   // React Toast section 
   useEffect(()=> {
     if(isSucess && newblogcategory ) {
       toast.success('Blog Category added successfully') 
     } 
+    if(updatedBlogCategory && isSucess){
+      toast.success('Blog category Updated Successfully')
+    }
     if(isError ) {
       toast.error('Oops !! Something went wrong');
     }
   }, [isSucess, isError, isLoading])
 
  const formik = useFormik({
+  enableReinitialize : true,
   initialValues: {
-    tittle: '',
+    tittle: blogcategoryName || '',
   },
   validationSchema : schema,
   onSubmit: (values) => { 
-    dispatch(createNewCategory(values));
+    if(getblogcategoryid !== undefined) {
+      dispatch(updateBlogCategory({id: getblogcategoryid , Data : values}))
+      setTimeout(()=> {
+        navigate("/admin/blogcategories")
+        dispatch(resetState())
+      }, 1000)
+
+    } else {
+      dispatch(createNewCategory(values));
     formik.handleReset();
     setTimeout(()=> {
       dispatch(resetState())
     }, 3000)
+    }
   },
 });
 
@@ -47,7 +76,7 @@ function Addblogcategory() {
     <div>
         <>
         <div className='mt-3 mx-2 py-2 h-[82vh] overflow-y-scroll '>
-            <h2 className='font-bold text-xl tracking-wide px-3 py-2 '>Add New Blog Category</h2>
+            <h2 className='font-bold text-xl tracking-wide px-3 py-2 '>{getblogcategoryid ? "Edit ": "Add New"} Blog Category</h2>
             <div className='px-3 py-2 w-[80%] '>
                 <form onSubmit={formik.handleSubmit}>
                   <label for="Select category" className='my-1 font-medium'>Category Tittile</label>
@@ -67,7 +96,7 @@ function Addblogcategory() {
                   <button 
                     type='submit'
                     className='bg-green-500 rounded-lg font-medium hover:bg-green-400 py-2 px-3 mt-3'>
-                    Add Category  
+                    {getblogcategoryid ? "Update ": "Add New"} Category  
                   </button>     
                 
                 </form>

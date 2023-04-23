@@ -33,6 +33,27 @@ export const addcolor = createAsyncThunk("color/create-color", async (values, th
     }
 })
 
+// Function to fetch color 
+export const fetchcolor = createAsyncThunk("color/get-color", async (values, thunkAPI)=>{
+    try {
+         return await colorService.fetchcolor(values)
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err)
+
+    }
+})
+
+// Function to update single color
+export const updatecolor = createAsyncThunk("color/update-color", async (values, thunkAPI)=>{
+    try {
+         return await colorService.updatecolor(values)
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err)
+
+    }
+})
+
+
 // FOR RESETTING INTO initial state
 export const resetState = createAction("reset_all")
 
@@ -70,6 +91,38 @@ export const colorSlice = createSlice({
 
         })
         .addCase(addcolor.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSucess = false;
+            state.message = action.error;
+        })
+        .addCase(fetchcolor.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(fetchcolor.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSucess = true;
+            state.colorName = action.payload.tittle;
+
+        })
+        .addCase(fetchcolor.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSucess = false;
+            state.message = action.error;
+        })
+        .addCase(updatecolor.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(updatecolor.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSucess = true;
+            state.updatedColor = action.payload
+
+        })
+        .addCase(updatecolor.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSucess = false;
