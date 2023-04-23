@@ -5,7 +5,8 @@ import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
-import { addcoupon, resetState } from '../features/coupon/couponSlice';
+import { addcoupon, fetchcoupon, resetState } from '../features/coupon/couponSlice';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 function Addcoupon() {
@@ -18,8 +19,22 @@ function Addcoupon() {
  });
     
  const dispatch = useDispatch()
+ const location = useLocation()
+ const navigate = useNavigate()
+
+ const getcouponid = location.pathname.split('/')[3]
+
+ useEffect(()=> {
+  if(getcouponid !== undefined) {
+    dispatch(fetchcoupon(getcouponid))
+  } else {
+    dispatch(resetState())
+  }
+ }, [])
+
+
  const couponstate = useSelector((state)=> state.coupons)  // Toast related
- const {isSucess, isError, isLoading, createdcoupon} = couponstate //Toast related
+ const {isSucess, isError, isLoading, createdcoupon, couponData} = couponstate //Toast related
 
  // React Toast section 
  useEffect(()=> {
@@ -33,10 +48,11 @@ function Addcoupon() {
 
  // Implymenting formik
 const formik = useFormik({
+  enableReinitialize : true,
   initialValues: {
-    tittle: '',
-    date : "",
-    discount : "",
+    tittle: couponData?.tittle || ' ',
+    date : couponData?.expiry || " ",
+    discount : couponData?.discount || "",
   },
   validationSchema : schema,
   onSubmit: (values) => { 

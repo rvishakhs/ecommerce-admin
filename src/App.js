@@ -46,6 +46,7 @@ function App() {
                 <Route path="brands/:id" element={<Addbrands/>}/>
                 <Route path="addcoupons" element={<Addcoupon/>}/>
                 <Route path="coupons" element={<Couponlisting/>}/>
+                <Route path="coupons/:id" element={<Addcoupon/>}/>
                 <Route path="colors" element={<ColorList/>}/>
                 <Route path="colors/:id" element={<Addcolor/>}/>
                 <Route path="addcolor" element={<Addcolor/>}/>

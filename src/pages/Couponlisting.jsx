@@ -60,7 +60,7 @@ function Couponlisting() {
                 action : (
                   <div className='flex flex-row space-x-2'>
 
-                    <Link to="/">
+                    <Link to={`/admin/coupons/${couponstate[i]._id}`}>
                       <FiEdit className='w-5 h-5'/>
                     </Link>
                     <Link to="/">
@@ -75,7 +75,7 @@ function Couponlisting() {
   return (
     <>
     <div className='mt-3 mx-2 py-2 h-[82vh] overflow-y-scroll '>
-        <h2 className='font-bold text-xl tracking-wide px-3 py-2 '>Brands </h2>
+        <h2 className='font-bold text-xl tracking-wide px-3 py-2 '>Coupons </h2>
         <div className='px-2 py-2 '>
             <Table columns={columns} dataSource={tabledata} tableLayout/>
 
