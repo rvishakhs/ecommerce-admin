@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
-import { FetchaprodCategory, addProdCategory, resetState } from '../features/products/productCategorySlice';
+import { FetchaprodCategory, addProdCategory, resetState, updateProdCategory } from '../features/products/productCategorySlice';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 function Addcategory() {
@@ -14,7 +14,6 @@ function Addcategory() {
  });
 
  const dispatch = useDispatch()
- const locattion = useLocation()
  const navigate = useNavigate()
 
  const location = useLocation();
@@ -22,7 +21,7 @@ function Addcategory() {
 
 
  const newProductCategory = useSelector((state)=> state.prodCategory)  // Toast related
- const {isSucess, isError, isLoading, newproductCategory, categoryName} = newProductCategory //Toast related
+ const {isSucess, isError, isLoading, newproductCategory, categoryName, updatedprodcategory} = newProductCategory //Toast related
 
  useEffect(()=> {
   if(getprodcatid !== undefined){
@@ -37,6 +36,9 @@ function Addcategory() {
     if(isSucess && newproductCategory ) {
       toast.success('Product Category added successfully') 
     } 
+    if(updatedprodcategory && isSucess ) {
+      toast.success('Product Category updated successfully')
+    }
     if(isError ) {
       toast.error('Oops !! Something went wrong');
     }
@@ -49,11 +51,19 @@ function Addcategory() {
   },
   validationSchema : schema,
   onSubmit: (values) => { 
-    // dispatch(addProdCategory(values));
-    // formik.handleReset();
-    // setTimeout(() => {
-    //   dispatch(resetState())
-    // }, 2000)
+    if(getprodcatid !== undefined){
+      dispatch(updateProdCategory({id: getprodcatid, data: values}))
+      setTimeout(()=> {
+        navigate("/admin/category")
+        dispatch(resetState())
+      }, 1000)
+    } else {
+      dispatch(addProdCategory(values));
+      formik.handleReset();
+      setTimeout(() => {
+        dispatch(resetState())
+      }, 2000)
+    }
   },
 });
     

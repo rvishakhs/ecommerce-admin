@@ -42,6 +42,16 @@ export const FetchaprodCategory = createAsyncThunk("product/getacategory", async
     }
 })
 
+// Updating a product category
+export const updateProdCategory = createAsyncThunk("product/updatecategory", async (values, thunkAPI)=>{
+    try {
+         return await productCategoryService.updateprodCategory(values)
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err)
+
+    }
+})
+
 
 // FOR RESETTING INTO initial state
 export const resetState = createAction("reset_all")
@@ -96,6 +106,22 @@ export const productCategorySlice = createSlice({
 
         })
         .addCase(FetchaprodCategory.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSucess = false;
+            state.message = action.error;
+        }) 
+        .addCase(updateProdCategory.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(updateProdCategory.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSucess = true;
+            state.updatedprodcategory = action.payload;
+
+        })
+        .addCase(updateProdCategory.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSucess = false;

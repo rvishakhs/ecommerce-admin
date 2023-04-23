@@ -26,6 +26,13 @@ const createProdCategory = async (ProdCategory) => {
 const FetchaprodCategory = async (id) => {
     const response = await axios.get(`${base_Url}category/${id}`);
     return response.data;
+}
+
+// Updating single Product Category
+
+const  updateprodCategory= async (data) => {
+    const response = await axios.put(`${base_Url}category/update/${data.id}`,data.data, config);
+    return response.data;
 }  
 
 
@@ -34,7 +41,8 @@ const FetchaprodCategory = async (id) => {
 const productCategoryService = {
     getProdCategories,
     createProdCategory,
-    FetchaprodCategory
+    FetchaprodCategory,
+    updateprodCategory
 }
 
 export default productCategoryService 
