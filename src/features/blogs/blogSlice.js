@@ -34,6 +34,19 @@ export const creatBlog = createAsyncThunk("blog/create-blog", async (values, thu
     }
 })
 
+// For deleting blog
+export const deleteBlog = createAsyncThunk("blog/delete-blog", async (values, thunkAPI)=>{
+    try {
+         return await blogService.deleteBlog(values)
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err)
+
+    }
+})
+
+
+
+// Reseting all states
 export const resetState = createAction("reset all")
 
 
@@ -70,6 +83,22 @@ export const blogSlice = createSlice({
 
         })
         .addCase(creatBlog.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSucess = false;
+            state.message = action.error;
+        }) 
+        .addCase(deleteBlog.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(deleteBlog.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSucess = true;
+            state.deletedblog = action.payload;
+
+        })
+        .addCase(deleteBlog.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSucess = false;

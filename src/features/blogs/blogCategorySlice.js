@@ -55,6 +55,17 @@ export const updateBlogCategory = createAsyncThunk("blog/update-category", async
     }
 })
 
+// Function for deleting existing blog category
+export const deleteBlogCategory = createAsyncThunk("blog/delete-category", async (values,thunkAPI)=>{
+    try {
+        return await blogCategoryService.deletelogcategory(values)
+    }catch (err) {
+        return thunkAPI.rejectWithValue(err)
+
+    }
+})
+
+
 
 // FOR RESETTING INTO initial state
 export const resetState = createAction("reset_all")
@@ -125,6 +136,22 @@ export const blogCategorySlice = createSlice({
 
         })
         .addCase(updateBlogCategory.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSucess = false;
+            state.message = action.error;
+        }) 
+        .addCase(deleteBlogCategory.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(deleteBlogCategory.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSucess = true;
+            state.deletedblogCat = action.payload;
+
+        })
+        .addCase(deleteBlogCategory.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSucess = false;

@@ -50,7 +50,6 @@ function Brands() {
         dispatch(getbrands())
         setOpen(false)
       }, 100);
-
   }
 
     const columns = [
@@ -98,7 +97,6 @@ function Brands() {
                     <button onClick={()=> handleClick(brandState[i]._id)}>
                       <AiOutlineDelete className='w-[22px] h-[22px] hover:text-blue-600'/>
                     </button>
-                  
                   </div>
                 )
                 

@@ -7,12 +7,26 @@ import {AiOutlineDelete} from 'react-icons/ai'
 import { deleteColor, getcolors } from '../features/colors/colorSlice';
 import moment from 'moment';
 import CustomModal from '../components/CustomModal';
+import { toast } from 'react-toastify';
 
 function ColorList() {
 
   const dispatch = useDispatch()
   const [open, setOpen] = useState(false);
   const [colorId, setcolorId] = useState("");
+
+  const addedcolor = useSelector((state)=> state.colors)  // Toast related
+ const {isSucess, isError, isLoading, deletedColor } = addedcolor  //Toast related
+
+  // React Toast section 
+  useEffect(()=> {
+    if(isSucess && deletedColor ) {
+      toast.success('color deleted successfully') 
+    } 
+    if(isError ) {
+      toast.error('Oops !! Something went wrong');
+    }
+  }, [isSucess, isError, isLoading])
 
   const showModal = () => {
     setOpen(true);

@@ -58,14 +58,14 @@ function Addblogcategory() {
       setTimeout(()=> {
         navigate("/admin/blogcategories")
         dispatch(resetState())
-      }, 1000)
+      }, 100)
 
     } else {
       dispatch(createNewCategory(values));
     formik.handleReset();
     setTimeout(()=> {
       dispatch(resetState())
-    }, 3000)
+    }, 250)
     }
   },
 });

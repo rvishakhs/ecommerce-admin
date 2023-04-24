@@ -33,15 +33,23 @@ const fetchblogcategory = async (id) => {
 // Update existing blog category using id
 const updateblogcategory = async (data) => {
     const response = await axios.put(`${base_Url}blogcategory/${data.id}`,data.Data, config);
-
     return response.data;
 }  
+
+// Delete Existing blog category
+
+const deletelogcategory = async (id) => {
+    const response = await axios.delete(`${base_Url}blogcategory/${id}`, config);
+
+    return response.data;
+}
 
 const blogCategoryService = {
     getBlogCategories,
     createblogCategory,
     fetchblogcategory,
-    updateblogcategory
+    updateblogcategory,
+    deletelogcategory,
 }
 
 export default blogCategoryService 
