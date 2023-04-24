@@ -23,6 +23,10 @@ code {
   cursor: pointer;
   transition: color 0.3s;
 }
+.ant-btn-primary {
+  color: black !important;
+  border: 2px,  !important
+}
 
 #components-layout-demo-custom-trigger .trigger:hover {
   color: #1890ff;  

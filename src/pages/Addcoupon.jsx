@@ -51,7 +51,7 @@ const formik = useFormik({
   enableReinitialize : true,
   initialValues: {
     tittle: couponData?.tittle || ' ',
-    date : couponData?.expiry || " ",
+    date : couponData?.expiry|| " ",
     discount : couponData?.discount || "",
   },
   validationSchema : schema,
