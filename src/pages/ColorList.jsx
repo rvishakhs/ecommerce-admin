@@ -1,13 +1,40 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {  Table } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {FiEdit} from 'react-icons/fi'
 import {AiOutlineDelete} from 'react-icons/ai'
-import { getcolors } from '../features/colors/colorSlice';
+import { deleteColor, getcolors } from '../features/colors/colorSlice';
 import moment from 'moment';
+import CustomModal from '../components/CustomModal';
 
 function ColorList() {
+
+  const dispatch = useDispatch()
+  const [open, setOpen] = useState(false);
+  const [colorId, setcolorId] = useState("");
+
+  const showModal = () => {
+    setOpen(true);
+  };
+  const hideModal = () => {
+    setOpen(false);
+  };
+
+  const handleClick = (data) => {
+    setcolorId(data)
+    setOpen(true)
+
+  }
+
+  const deleteFunc = (id) => {
+      dispatch(deleteColor(id))
+      setTimeout(() => {
+        dispatch(getcolors())
+        setOpen(false)
+      }, 100);
+
+  }
 
     const columns = [
         {
@@ -33,7 +60,6 @@ function ColorList() {
         },
     ]
 
-    const dispatch = useDispatch()
 
     useEffect(()=> {
       dispatch(getcolors())
@@ -54,9 +80,9 @@ function ColorList() {
                     <Link to={`/admin/colors/${colorstate[i]._id}`}>
                       <FiEdit className='w-5 h-5'/>
                     </Link>
-                    <Link to="/">
-                      <AiOutlineDelete className='w-[22px] h-[22px]'/>
-                    </Link>
+                    <button onClick={()=> handleClick(colorstate[i]._id)}>
+                      <AiOutlineDelete className='w-[22px] h-[22px] hover:text-blue-600'/>
+                    </button>
                   
                   </div>
                 )
@@ -70,6 +96,8 @@ function ColorList() {
             <Table columns={columns} dataSource={tabledata} tableLayout/>
 
         </div>
+        <CustomModal  title="Delete" open={open} action={()=> deleteFunc(colorId)}  hideModal={hideModal} content="Are you sure? You want to  delete color" />
+
     </div>
    </>
   )

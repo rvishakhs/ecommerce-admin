@@ -58,14 +58,14 @@ function Addcolor() {
       setTimeout(()=> {
         navigate("/admin/colors")
         dispatch(resetState())
-      }, 1000)
+      }, 100)
        
     } else {
       dispatch(addcolor(values));
       formik.handleReset();
       setTimeout(()=> {
         dispatch(resetState())
-      }, 2000)
+      }, 200)
     }
   },
 });

@@ -53,6 +53,17 @@ export const updatecolor = createAsyncThunk("color/update-color", async (values,
     }
 })
 
+// Function to delete single color
+export const deleteColor = createAsyncThunk("color/delete-color", async (values, thunkAPI)=>{
+    try {
+         return await colorService.deletecolor(values)
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err)
+
+    }
+})
+
+
 
 // FOR RESETTING INTO initial state
 export const resetState = createAction("reset_all")
@@ -123,6 +134,22 @@ export const colorSlice = createSlice({
 
         })
         .addCase(updatecolor.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSucess = false;
+            state.message = action.error;
+        })
+        .addCase(deleteColor.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(deleteColor.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSucess = true;
+            state.deletedColor = action.payload
+
+        })
+        .addCase(deleteColor.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSucess = false;

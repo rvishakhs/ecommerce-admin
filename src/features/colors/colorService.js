@@ -36,12 +36,21 @@ const updatecolor = async (data) => {
     return response.data;
 }  
 
+// Delete color
+
+const deletecolor = async (id) => {
+    const response = await axios.delete(`${base_Url}color/${id}`, config);
+
+    return response.data;
+}  
+
 
 const colorService = {
     getColors,
     createcolor,
     fetchcolor,
-    updatecolor
+    updatecolor,
+    deletecolor,
 }
 
 export default colorService 
