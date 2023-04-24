@@ -14,7 +14,7 @@ function Addcoupon() {
   // Yup validation
  let schema = Yup.object().shape({
   tittle: Yup.string().required(" Coupon name required"),
-  date: Yup.date().required("Please choose an expiry date"),
+  expiry: Yup.date().required("Please choose an expiry date"),
   discount : Yup.number().required("Please type the discount percentage")
  });
     
@@ -46,16 +46,27 @@ function Addcoupon() {
    }
  }, [isSucess, isError, isLoading])
 
+
+//  Changing date format
+const changeDateFormat = (date) => {
+  const newDate = new Date(date).toLocaleDateString();
+  const [day, month, year] = newDate.split("/")
+  return [year, month, day].join("-")
+
+}
+
+
  // Implymenting formik
 const formik = useFormik({
   enableReinitialize : true,
   initialValues: {
     tittle: couponData?.tittle || ' ',
-    date : couponData?.expiry|| " ",
+    expiry : changeDateFormat(couponData?.expiry) || " ",
     discount : couponData?.discount || "",
   },
   validationSchema : schema,
   onSubmit: (values) => { 
+    alert(JSON.stringify(values))
     dispatch(addcoupon(values))
     formik.handleReset();
     setTimeout(()=> {
@@ -89,9 +100,9 @@ const formik = useFormik({
                   <label for="Select category" className='my-1 font-medium'>Expiry Date</label>
                   <Inputcomponent 
                     type="date" 
-                    id="date" 
-                    val={formik.values.date} 
-                    onCH={formik.handleChange("date")}
+                    id="expiry" 
+                    val={formik.values.expiry} 
+                    onCH={formik.handleChange("expiry")}
                   />
                   <div className='text-sm text-red-400'>
                       {formik.touched.date && formik.errors.date ? (
