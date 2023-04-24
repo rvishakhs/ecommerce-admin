@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {  Table } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProdCategory } from '../features/products/productCategorySlice';
+import { deleteProdCategory, getProdCategory } from '../features/products/productCategorySlice';
 import { Link } from 'react-router-dom';
 import {FiEdit} from 'react-icons/fi'
 import {AiOutlineDelete} from 'react-icons/ai'
 import moment from 'moment';
-
+import CustomModal from '../components/CustomModal';
+import { toast } from 'react-toastify';
 
 function Categorylist() {
 
@@ -35,6 +36,45 @@ function Categorylist() {
     ]
 
     const dispatch = useDispatch();
+    const [open, setOpen] = useState(false);
+    const [brandId, setbrandId] = useState("");
+
+    const newProductCategory = useSelector((state)=> state.prodCategory)  // Toast related
+    const {isSucess, isError, isLoading, deletedProdCat} = newProductCategory //Toast related
+
+    // React Toast section 
+    useEffect(()=> {
+      if(deletedProdCat && isSucess  ) {
+        toast.success('Product Category deleted successfully') 
+      } 
+      if(isError ) {
+        toast.error('Oops !! Something went wrong');
+      }
+    }, [isSucess, isError, isLoading])
+
+
+
+    const showModal = () => {
+      setOpen(true);
+    };
+    const hideModal = () => {
+      setOpen(false);
+    };
+  
+    const handleClick = (data) => {
+      setbrandId(data)
+      setOpen(true)
+  
+    }
+  
+    const deleteFunc = (id) => {
+        dispatch(deleteProdCategory(id))
+        setTimeout(() => {
+          dispatch(getProdCategory())
+          setOpen(false)
+        }, 100);
+  
+    }
 
     useEffect(()=>{
       dispatch(getProdCategory())
@@ -56,9 +96,9 @@ function Categorylist() {
                 <Link to={`/admin/category/${productCategoryState[i]._id}`}>
                   <FiEdit className='w-5 h-5'/>
                 </Link>
-                <Link to="/">
-                  <AiOutlineDelete className='w-[22px] h-[22px]'/>
-                </Link>
+                <button onClick={()=> handleClick(productCategoryState[i]._id)}>
+                      <AiOutlineDelete className='w-[22px] h-[22px] hover:text-blue-600'/>
+                </button>
               
               </div>
             )
@@ -71,8 +111,9 @@ function Categorylist() {
         <h2 className='font-bold text-xl tracking-wide px-3 py-2 '>Categories </h2>
         <div className='px-2 py-2 '>
             <Table columns={columns} dataSource={tabledata} tableLayout/>
-
         </div>
+        <CustomModal  title="Delete" open={open} action={()=> deleteFunc(brandId)}  hideModal={hideModal} content="Are you sure? You want to  delete this product Category" />
+
     </div>
    </>
   )

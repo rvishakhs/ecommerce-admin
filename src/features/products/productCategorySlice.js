@@ -52,6 +52,17 @@ export const updateProdCategory = createAsyncThunk("product/updatecategory", asy
     }
 })
 
+// Deleting product category
+export const deleteProdCategory = createAsyncThunk("product/deletecategory", async (values, thunkAPI)=>{
+    try {
+         return await productCategoryService.deleteprodCategory(values)
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err)
+
+    }
+})
+
+
 
 // FOR RESETTING INTO initial state
 export const resetState = createAction("reset_all")
@@ -122,6 +133,22 @@ export const productCategorySlice = createSlice({
 
         })
         .addCase(updateProdCategory.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSucess = false;
+            state.message = action.error;
+        }) 
+        .addCase(deleteProdCategory.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(deleteProdCategory.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSucess = true;
+            state.deletedProdCat = action.payload;
+
+        })
+        .addCase(deleteProdCategory.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSucess = false;

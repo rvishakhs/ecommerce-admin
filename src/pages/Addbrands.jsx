@@ -59,14 +59,14 @@ const formik = useFormik({
       setTimeout(()=> {
         navigate("/admin/brands")
         dispatch(resetState())
-      }, 1000)
+      }, 100)
        
     } else {
       dispatch(addBrand(values));
       formik.handleReset();
       setTimeout(()=> {
         dispatch(resetState())
-      }, 2000)
+      }, 200)
     }
   },
 });

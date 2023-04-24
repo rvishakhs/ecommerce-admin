@@ -35,6 +35,13 @@ const  updateprodCategory= async (data) => {
     return response.data;
 }  
 
+// Delete Product Category
+const  deleteprodCategory= async (id) => {
+    const response = await axios.delete(`${base_Url}category/delete/${id}`, config);
+    return response.data;
+}  
+
+
 
 
 
@@ -42,7 +49,8 @@ const productCategoryService = {
     getProdCategories,
     createProdCategory,
     FetchaprodCategory,
-    updateprodCategory
+    updateprodCategory,
+    deleteprodCategory,
 }
 
 export default productCategoryService 

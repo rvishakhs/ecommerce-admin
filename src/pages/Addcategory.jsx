@@ -56,13 +56,13 @@ function Addcategory() {
       setTimeout(()=> {
         navigate("/admin/category")
         dispatch(resetState())
-      }, 1000)
+      }, 100)
     } else {
       dispatch(addProdCategory(values));
       formik.handleReset();
       setTimeout(() => {
         dispatch(resetState())
-      }, 2000)
+      }, 200)
     }
   },
 });

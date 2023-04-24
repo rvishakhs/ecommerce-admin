@@ -7,7 +7,7 @@ import {FiEdit} from 'react-icons/fi'
 import {AiOutlineDelete} from 'react-icons/ai'
 import moment from 'moment';
 import CustomModal from '../components/CustomModal';
-import 'antd/dist/reset.css';
+import { toast } from 'react-toastify';
 
 
 
@@ -15,6 +15,22 @@ function Brands() {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [brandId, setbrandId] = useState("");
+
+  //  Toast notification
+  const newBrand = useSelector((state)=> state.brand)  // Toast related
+  const {isSucess, isError, isLoading, deletedBrand} = newBrand //Toast related
+
+  // React Toast section 
+ useEffect(()=> {
+  if(isSucess && deletedBrand ) {
+    toast.success('Brand deleted successfully') 
+  } 
+  if(isError ) {
+    toast.error('Oops !! Something went wrong');
+  }
+}, [isSucess, isError, isLoading])
+
+
   const showModal = () => {
     setOpen(true);
   };
