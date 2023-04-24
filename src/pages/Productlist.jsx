@@ -1,12 +1,53 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {  Table } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProducts } from '../features/products/productSlice';
+import { deleteProducts, getProducts } from '../features/products/productSlice';
 import { Link } from 'react-router-dom';
 import {FiEdit} from 'react-icons/fi'
 import {AiOutlineDelete} from 'react-icons/ai'
+import CustomModal from '../components/CustomModal';
+import { toast } from 'react-toastify';
+
 
 function Productlist() {
+
+  const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+  const [productId, setproductId] = useState("");
+
+  const newProduct = useSelector((state)=> state.product)  // Toast related
+  const {isSucess, isError, isLoading, deletedProduct} = newProduct //Toast related
+
+  // React Toast section 
+  useEffect(()=> {
+    if(isSucess && deletedProduct ) {
+      toast.success('Product deleted successfully') 
+    } 
+    if(isError ) {
+      toast.error('Oops !! Something went wrong');
+    }
+  }, [isSucess, isError, isLoading])
+
+  const showModal = () => {
+    setOpen(true);
+  };
+  const hideModal = () => {
+    setOpen(false);
+  };
+
+  const handleClick = (data) => {
+    setproductId(data)
+    setOpen(true)
+
+  }
+
+  const deleteFunc = (id) => {
+      dispatch(deleteProducts(id))
+      setTimeout(() => {
+        dispatch(getProducts())
+        setOpen(false)
+      }, 100);
+  }
 
     const columns = [
         {
@@ -59,8 +100,6 @@ function Productlist() {
           key: 'action',
         },
     ]
-
-    const dispatch = useDispatch()
           useEffect(()=> {
             dispatch(getProducts())
           }, [])
@@ -85,9 +124,9 @@ function Productlist() {
                     <Link to="/">
                       <FiEdit className='w-5 h-5'/>
                     </Link>
-                    <Link to="/">
-                      <AiOutlineDelete className='w-[22px] h-[22px]'/>
-                    </Link>
+                    <button onClick={()=> handleClick(productstate[i]._id)}>
+                      <AiOutlineDelete className='w-[22px] h-[22px] hover:text-blue-600'/>
+                    </button>
                   
                   </div>
                 )
@@ -99,8 +138,9 @@ function Productlist() {
         <h2 className='font-bold text-xl tracking-wide px-3 py-2 '>Products Available</h2>
         <div className='px-2 py-2 '>
             <Table columns={columns} dataSource={tabledata} tableLayout/>
-
         </div>
+        <CustomModal  title="Delete" open={open} action={()=> deleteFunc(productId)}  hideModal={hideModal} content="Are you sure? You want to  delete this Product" />
+
     </div>
    </>
   )

@@ -60,7 +60,7 @@ const formik = useFormik({
     formik.handleReset();
     setTimeout(()=> {
       dispatch(resetState())
-    }, 2000)
+    }, 200)
   },
 });
 

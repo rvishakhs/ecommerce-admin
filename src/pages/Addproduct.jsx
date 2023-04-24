@@ -90,7 +90,7 @@ const formik = useFormik({
     setTimeout(()=> {
       dispatch(resetState())
       window.location.reload()
-    }, 2500)
+    }, 250)
   },
 });
   useEffect(()=> {

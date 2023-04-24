@@ -37,7 +37,7 @@ function Categorylist() {
 
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
-    const [brandId, setbrandId] = useState("");
+    const [categoryId, setcategoryId] = useState("");
 
     const newProductCategory = useSelector((state)=> state.prodCategory)  // Toast related
     const {isSucess, isError, isLoading, deletedProdCat} = newProductCategory //Toast related
@@ -62,7 +62,7 @@ function Categorylist() {
     };
   
     const handleClick = (data) => {
-      setbrandId(data)
+      setcategoryId(data)
       setOpen(true)
   
     }
@@ -112,7 +112,7 @@ function Categorylist() {
         <div className='px-2 py-2 '>
             <Table columns={columns} dataSource={tabledata} tableLayout/>
         </div>
-        <CustomModal  title="Delete" open={open} action={()=> deleteFunc(brandId)}  hideModal={hideModal} content="Are you sure? You want to  delete this product Category" />
+        <CustomModal  title="Delete" open={open} action={()=> deleteFunc(categoryId)}  hideModal={hideModal} content="Are you sure? You want to  delete this product Category" />
 
     </div>
    </>

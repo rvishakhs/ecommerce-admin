@@ -32,6 +32,17 @@ export const addProducts = createAsyncThunk("product/create-products", async (va
     }
 })
 
+// Function for deleteing products using id
+
+export const deleteProducts = createAsyncThunk("product/delete-products", async (values, thunkAPI)=>{
+    try {
+         return await productService.deleteProducts(values)
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err)
+
+    }
+})
+
 // FOR RESETTING INTO initial state
 export const resetState = createAction("reset_all")
 
@@ -68,6 +79,21 @@ export const productSlice = createSlice({
             state.newproduct = action.payload;
         })
         .addCase(addProducts.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isSucess = false;
+            state.isError = true;
+            state.message = action.error;
+        })
+        .addCase(deleteProducts.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(deleteProducts.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isSucess = true;
+            state.isError = false;
+            state.deletedProduct = action.payload;
+        })
+        .addCase(deleteProducts.rejected, (state, action) => {
             state.isLoading = false;
             state.isSucess = false;
             state.isError = true;
