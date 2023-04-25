@@ -35,8 +35,10 @@ function App() {
                 <Route path="enquiry" element={<Enquiry/>}/>
                 <Route path="orders" element={<Orderlist/>}/>
                 <Route path="products" element={<Productlist/>}/>
+                <Route path="products/:id" element={<Addproduct/>}/>
                 <Route path="addproducts" element={<Addproduct/>}/>
                 <Route path="blogs" element={<Bloglist/>}/>
+                <Route path="blogs/:id" element={<Addblog/>}/>
                 <Route path="blogcategories" element={<Blogcategorylist/>}/>
                 <Route path="blogcategories/:id" element={<Addblogcategory/>}/>
                 <Route path="addblogcategories" element={<Addblogcategory/>}/>

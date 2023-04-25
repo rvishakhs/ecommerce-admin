@@ -107,7 +107,7 @@ function Bloglist() {
                 action : (
                   <div className='flex flex-row space-x-2'>
 
-                    <Link to="/">
+                    <Link to={`/admin/blogs/${blogstate[i]._id}`}>
                       <FiEdit className='w-5 h-5'/>
                     </Link>
                     <button onClick={()=> handleClick(blogstate[i]._id)}>

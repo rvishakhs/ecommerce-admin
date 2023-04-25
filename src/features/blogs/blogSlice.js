@@ -34,6 +34,18 @@ export const creatBlog = createAsyncThunk("blog/create-blog", async (values, thu
     }
 })
 
+// Function for fetching all blogs
+export const fetchBlog = createAsyncThunk("blog/fetch-blog", async (values, thunkAPI)=>{
+    try {
+         return await blogService.fetchBlog(values)
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err)
+
+    }
+})
+
+
+
 // For deleting blog
 export const deleteBlog = createAsyncThunk("blog/delete-blog", async (values, thunkAPI)=>{
     try {
@@ -99,6 +111,23 @@ export const blogSlice = createSlice({
 
         })
         .addCase(deleteBlog.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSucess = false;
+            state.message = action.error;
+        }) 
+        .addCase(fetchBlog.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(fetchBlog.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSucess = true;
+            state.blogData = action.payload;
+            state.blogImage = action.payload.image;
+
+        })
+        .addCase(fetchBlog.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSucess = false;

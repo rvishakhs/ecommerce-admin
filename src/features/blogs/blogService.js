@@ -24,6 +24,14 @@ const createBlog = async (blogs) => {
     return response.data;
 }
 
+// Fetching blog data 
+const fetchBlog = async (id) => {
+    const response = await axios.get(`${base_Url}blog/${id}`, );
+    return response.data;
+}
+
+
+
 // Deleting Blog with id
 
 const deleteBlog = async (id) => {
@@ -36,6 +44,7 @@ const blogService = {
     getBlogs,
     createBlog,
     deleteBlog,
+    fetchBlog,
 }
 
 export default blogService 

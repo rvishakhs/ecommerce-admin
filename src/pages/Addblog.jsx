@@ -4,23 +4,40 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { getblogCategory } from '../features/blogs/blogCategorySlice';
-import {creatBlog, resetState} from "../features/blogs/blogSlice";
+import {creatBlog, fetchBlog, resetState} from "../features/blogs/blogSlice";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { deleteImage, imageUpload } from '../features/uploadImages/uploadimageSlice';
 import Dropzone from 'react-dropzone'
 import { toast } from 'react-toastify';
 import {IoMdCloseCircleOutline} from "react-icons/io"
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 function Addblog() {
 
   const dispatch = useDispatch()
+  const location = useLocation() 
+  const navigate = useNavigate()
+  const images = [];
+  const Newimages = ["Arun"];
   const blogstate = useSelector((state) => state.blogCategory.blogcategory)
   const imageState = useSelector((state)=> state.imageupload.images)
   const blog = useSelector((state) => state.blogs)
+  const {isSucess, isError, isLoading, createdblog, blogData, blogImage} = blog
 
-  const {isSucess, isError, isLoading, createdblog} = blog
+  const blogId = location.pathname.split('/')[3]
+
+  useEffect(() => {
+    if(blogId !== undefined) {
+      dispatch(fetchBlog(blogId))
+      images.push(blogImage)
+    } else {
+      dispatch(resetState())
+    }
+  }, [blogId])
+
+  console.log(images);
 
     // Yup validation
  let schema = Yup.object().shape({
@@ -32,10 +49,11 @@ function Addblog() {
 
  // Implymenting formik
 const formik = useFormik({
+  enableReinitialize : true,
   initialValues: {
-    tittle: "",
-    category : "",
-    description : '',
+    tittle: blogData?.tittle || "",
+    category : blogData?.category || "",
+    description : blogData?.description || '',
     image : []
   },
   validationSchema : schema,
@@ -63,7 +81,7 @@ useEffect(()=> {
   useEffect(()=> {
     dispatch(getblogCategory())
   }, [])
-  const images = [] 
+
 
   // Adding images from redux for passing in to formik 
   imageState.forEach((image) => {
@@ -76,7 +94,7 @@ useEffect(()=> {
     // For color change and image upload
   useEffect(()=> {
     formik.values.image = images
-  }, [images])
+  }, [])
   
     
   return (

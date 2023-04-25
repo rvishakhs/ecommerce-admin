@@ -13,9 +13,10 @@ import "react-widgets/styles.css";
 import Dropzone from 'react-dropzone'
 import { deleteImage, imageUpload } from '../features/uploadImages/uploadimageSlice';
 import {IoMdCloseCircleOutline} from "react-icons/io"
-import { addProducts, resetState } from '../features/products/productSlice';
+import { addProducts, fetchProducts, resetState, updateProducts } from '../features/products/productSlice';
 import { Select, Space } from 'antd';
 import { toast } from 'react-toastify';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function Addproduct() {
   
@@ -32,14 +33,32 @@ function Addproduct() {
   });
   
   const dispatch = useDispatch()
+  const location = useLocation() 
+  const navigate = useNavigate()
   const [color, setcolor ] = useState([])
+  const images = [] 
+  const coloropt = [] 
 
   const brandState = useSelector((state)=> state.brand.brand)
   const productCategoryState = useSelector((state)=> state.prodCategory.productcategory)
   const colorstate = useSelector((state) => state.colors.color)
   const imageState = useSelector((state)=> state.imageupload.images)
   const newProduct = useSelector((state)=> state.product)  // Toast related
-  const {isSucess, isError, isLoading, newproduct} = newProduct //Toast related
+  const {isSucess, isError, isLoading, newproduct, productData, updatedProduct, productColor, productImages} = newProduct //Toast related
+
+  const productId = location.pathname.split('/')[3]
+
+  useEffect(() => {
+    if(productId !== undefined) {
+      dispatch(fetchProducts(productId))
+      images.push(productImages)
+    } else {
+      dispatch(resetState())
+    }
+  }, [productId])
+
+
+
 
   // React Toast section 
   useEffect(()=> {
@@ -50,8 +69,7 @@ function Addproduct() {
       toast.error('Oops !! Something went wrong');
     }
   }, [isSucess, isError, isLoading])
-  const images = [] 
-  const coloropt = [] 
+
 
   //Adding images to an array from the redux state
   imageState.forEach((image) => {
@@ -72,25 +90,35 @@ function Addproduct() {
   
   // Implymenting formik
 const formik = useFormik({
+  enableReinitialize : true,
   initialValues: {
-    tittle: '',
-    description : '',
-    price : '',
-    quantity : '',
-    category : "",
-    brand : "",
-    tag : "",
-    color : [],
-    image : []
+    tittle:  productData?.tittle || '',
+    description :  productData?.description || '',
+    price : productData?.price || '',
+    quantity : productData?.quantity || '',
+    category : productData?.category || '',
+    brand : productData?.brand || "",
+    tag : productData?.tag || "",
+    color : productColor ||  " ",
+    image : productImages || ' '
   },
   validationSchema : schema,
   onSubmit: (values) => { 
-    dispatch(addProducts(values));
-    formik.handleReset();
-    setTimeout(()=> {
+    if(productId !== undefined) {
+      dispatch(updateProducts({id: productId, Data: values} ))
+      setTimeout(()=> {
+        navigate("/admin/products")
+        dispatch(resetState())
+      }, 100)
+    } else {
+      dispatch(addProducts(values));
+      formik.handleReset();
+      setTimeout(()=> {
       dispatch(resetState())
-      window.location.reload()
-    }, 250)
+        window.location.reload()
+       }, 250)
+    }
+    
   },
 });
   useEffect(()=> {
@@ -103,7 +131,7 @@ const formik = useFormik({
     useEffect(()=> {
       formik.values.color = color ? color : " "
       formik.values.image = images 
-    }, [color, images])
+    }, [color])
   
     const handleChange = (e) => {
       setcolor(e)
@@ -297,7 +325,7 @@ const formik = useFormik({
                   </div>
                       {/* Image displaying */}
                   <div className='p-2 relative mt-2 flex flex-wrap gap-2'>
-                    {imageState?.map((image, index) => {
+                    {images?.map((image, index) => {
                       return (
                         <div key={index} className='relative w-[150px] group h-[150px] border border-gray-100 rounded-md'>
                           <img src={image.url} className='object-contain  w-[150px] h-[150px]' /> 
@@ -311,6 +339,20 @@ const formik = useFormik({
                         </div>
                       )
                     })}
+                    {/* {productImages?.map((image, index) => {
+                      return (
+                        <div key={index} className='relative w-[150px] group h-[150px] border border-gray-100 rounded-md'>
+                          <img src={image.url} className='object-contain  w-[150px] h-[150px]' /> 
+                          <button 
+                            type='button' 
+                            onClick={()=> dispatch(deleteImage(image.public_id))}
+                            className='absolute top-1 right-1'
+                          >
+                            <IoMdCloseCircleOutline className=' w-5 h-5 group-hover:opacity-100 hover:scale-105 opacity-0 group '/>
+                          </button>
+                        </div>
+                      )
+                    })} */}
                   </div>
 
                 {/* Submit Button  */}
