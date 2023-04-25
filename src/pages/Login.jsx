@@ -8,7 +8,7 @@ import  {AiOutlineGoogle}  from "react-icons/ai";
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
-import { login } from '../features/auth/authSlice';
+import { login, resetState } from '../features/auth/authSlice';
 
 function Login() {
 
@@ -29,15 +29,18 @@ function Login() {
         validationSchema : schema,
         onSubmit: (values) => {
           dispatch(login(values))  
-          alert(JSON.stringify(values, null, 2));
         },
       });
 
       const {user , isError ,isLoading , isSucess, message } = useSelector((state) => state.auth)
       useEffect(() => {
-        if(isSucess) {
-            navigate("admin") 
-        } else {
+        if(isSucess ) {
+            navigate("/admin") 
+        } if(isError ) {
+            alert("Invalid username or password")
+            formik.resetForm()
+        } 
+        else {
             navigate("/")
         }
       

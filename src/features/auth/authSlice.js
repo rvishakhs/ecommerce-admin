@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, createAction } from '@reduxjs/toolkit'
 import { RiNurseFill } from 'react-icons/ri'
 import authService from './authService'
 
@@ -21,6 +21,9 @@ export const login = createAsyncThunk("auth/admin-login", async (user, thunkAPI)
     }
 })
 
+// FOR RESETTING INTO initial state
+export const resetState = createAction("reset_all")
+
 export const authSlice = createSlice({
     name : "auth",
     initialState : initialState,
@@ -40,7 +43,8 @@ export const authSlice = createSlice({
             state.isSucess = false;
             state.isError = true;
             state.user = null;
-        });
+        })
+        .addCase(resetState, () => initialState);
     } ,
 }) 
 

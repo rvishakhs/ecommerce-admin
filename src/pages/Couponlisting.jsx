@@ -8,6 +8,7 @@ import moment from 'moment';
 import { deleteCoupon, getcoupons } from '../features/coupon/couponSlice';
 import CustomModal from '../components/CustomModal';
 import { toast } from 'react-toastify';
+import { resetState } from '../features/colors/colorSlice';
 
 
 function Couponlisting() {

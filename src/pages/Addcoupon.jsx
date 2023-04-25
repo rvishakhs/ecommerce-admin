@@ -5,7 +5,7 @@ import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
-import { addcoupon, fetchcoupon, resetState } from '../features/coupon/couponSlice';
+import { addcoupon, fetchcoupon, resetState, updatecouponFuc } from '../features/coupon/couponSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 
@@ -13,8 +13,8 @@ function Addcoupon() {
   
   // Yup validation
  let schema = Yup.object().shape({
-  tittle: Yup.string().required(" Coupon name required"),
-  expiry: Yup.date().required("Please choose an expiry date"),
+  tittle : Yup.string().required(" Coupon name required"),
+  expiry : Yup.date().required("Please choose an expiry date"),
   discount : Yup.number().required("Please type the discount percentage")
  });
     
@@ -34,13 +34,16 @@ function Addcoupon() {
 
 
  const couponstate = useSelector((state)=> state.coupons)  // Toast related
- const {isSucess, isError, isLoading, createdcoupon, couponData} = couponstate //Toast related
+ const {isSucess, isError, isLoading, createdcoupon, couponData, updatedCouponData} = couponstate //Toast related
 
  // React Toast section 
  useEffect(()=> {
    if(isSucess && createdcoupon ) {
      toast.success('Coupon added successfully') 
    } 
+   if(updatedCouponData && isSucess) {
+    toast.success('Coupon updated successfully')
+   }
    if(isError ) {
      toast.error('Oops !! Something went wrong');
    }
@@ -60,18 +63,26 @@ const changeDateFormat = (date) => {
 const formik = useFormik({
   enableReinitialize : true,
   initialValues: {
-    tittle: couponData?.tittle || ' ',
+    tittle: couponData?.tittle || " ",
     expiry : changeDateFormat(couponData?.expiry) || " ",
     discount : couponData?.discount || "",
   },
   validationSchema : schema,
   onSubmit: (values) => { 
-    alert(JSON.stringify(values))
-    dispatch(addcoupon(values))
-    formik.handleReset();
-    setTimeout(()=> {
-      dispatch(resetState())
-    }, 200)
+    if(getcouponid !== undefined) {
+      dispatch(updatecouponFuc({id: getcouponid, data: values}))
+      setTimeout(()=> {
+        navigate("/admin/coupons")
+        dispatch(resetState())
+      }, 100)
+    } else {
+      dispatch(addcoupon(values))
+      formik.handleReset();
+      setTimeout(()=> {
+        dispatch(resetState())
+      }, 200)
+    }
+
   },
 });
 
@@ -80,7 +91,7 @@ const formik = useFormik({
     <div>
         <>
         <div className='mt-3 mx-2 py-2 h-[82vh] overflow-y-scroll '>
-            <h2 className='font-bold text-xl tracking-wide px-3 py-2 '>Add New Coupons</h2>
+            <h2 className='font-bold text-xl tracking-wide px-3 py-2 '>{getcouponid ? "Edit" : "Add New" } Coupons</h2>
             <div className='px-3 py-2 w-[80%] '>
                 <form onSubmit={formik.handleSubmit}>
                   <label for="Select category" className='my-1 font-medium'>Coupon Name</label>
@@ -105,8 +116,8 @@ const formik = useFormik({
                     onCH={formik.handleChange("expiry")}
                   />
                   <div className='text-sm text-red-400'>
-                      {formik.touched.date && formik.errors.date ? (
-                          <div>{formik.errors.date}</div>
+                      {formik.touched.expiry && formik.errors.expiry ? (
+                          <div>{formik.errors.expiry}</div>
                       ) : null}
                   </div>
                   {/* Discount  */}
@@ -126,7 +137,7 @@ const formik = useFormik({
                   <button 
                   type='submit'   
                   className='bg-green-500 rounded-lg font-medium hover:bg-green-400 py-2 px-3 mt-3'>
-                    Add Coupon
+                  {getcouponid ? "Update" : "Add " } Coupon
                   </button>     
                 
                 </form>

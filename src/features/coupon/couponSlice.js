@@ -43,6 +43,18 @@ export const fetchcoupon = createAsyncThunk("coupon/fetch-coupon", async (values
     }
 })
 
+// Update Coupon functionality
+
+
+export const updatecouponFuc = createAsyncThunk("coupon/update-coupon", async (values, thunkAPI)=>{
+    try {
+         return await couponService.updateCoupon(values)
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err)
+
+    }
+})
+
 // Delete existing coupon from DB
 export const deleteCoupon = createAsyncThunk("coupon/delete-coupon", async (values, thunkAPI)=>{
     try {
@@ -124,6 +136,22 @@ export const couponSlice = createSlice({
 
         })
         .addCase(deleteCoupon.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSucess = false;
+            state.message = action.error;
+        }) 
+        .addCase(updatecouponFuc.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(updatecouponFuc.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSucess = true;
+            state.updatedCouponData = action.payload;
+
+        })
+        .addCase(updatecouponFuc.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSucess = false;

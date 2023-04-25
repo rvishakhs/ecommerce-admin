@@ -28,6 +28,14 @@ const fetchcoupon = async (id) => {
     return response.data;
 }  
 
+// Update Coupon request
+
+const updateCoupon = async (data) => {
+    const response = await axios.put(`${base_Url}coupon/${data.id}`,data.data, config);
+
+    return response.data;
+}  
+
 // Delete couppon 
 
 const deletecoupon = async (id) => {
@@ -43,6 +51,7 @@ const couponService = {
     createcoupon,
     fetchcoupon,
     deletecoupon,
+    updateCoupon,
 }
 
 export default couponService 
