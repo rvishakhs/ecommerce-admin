@@ -26,7 +26,7 @@ function Addblogcategory() {
   } else {
     dispatch(resetState())
   }
- }, [])
+ }, [getblogcategoryid])
 
 
 
