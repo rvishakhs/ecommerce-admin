@@ -131,7 +131,7 @@ const formik = useFormik({
     useEffect(()=> {
       formik.values.color = color ? color : " "
       formik.values.image = images 
-    }, [color])
+    }, [color, images])
   
     const handleChange = (e) => {
       setcolor(e)

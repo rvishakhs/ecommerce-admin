@@ -30,6 +30,15 @@ const fetchBlog = async (id) => {
     return response.data;
 }
 
+// Updating Existing Blog using Id
+
+const updateBlog = async (body) => {
+    const response = await axios.put(`${base_Url}blog/updateblog/${body.id}`, body.data, config );
+
+    return response.data;   
+}
+
+
 
 
 // Deleting Blog with id
@@ -45,6 +54,7 @@ const blogService = {
     createBlog,
     deleteBlog,
     fetchBlog,
+    updateBlog
 }
 
 export default blogService 

@@ -25,7 +25,7 @@ export const getblogs = createAsyncThunk("blog/getblogs", async (thunkAPI)=>{
 })
 
 // For creating a new blog
-export const creatBlog = createAsyncThunk("blog/create-blog", async (values, thunkAPI)=>{
+export const createblog = createAsyncThunk("blog/create-blog", async (values, thunkAPI)=>{
     try {
          return await blogService.createBlog(values)
     } catch (err) {
@@ -40,10 +40,16 @@ export const fetchBlog = createAsyncThunk("blog/fetch-blog", async (values, thun
          return await blogService.fetchBlog(values)
     } catch (err) {
         return thunkAPI.rejectWithValue(err)
-
     }
 })
-
+// Function for fetching all blogs
+export const updateBlog = createAsyncThunk("blog/update-blog", async (values, thunkAPI)=>{
+    try {
+         return await blogService.updateBlog(values)
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err)
+    }
+})
 
 
 // For deleting blog
@@ -84,17 +90,17 @@ export const blogSlice = createSlice({
             state.isSucess = false;
             state.message = action.error;
         }) 
-        .addCase(creatBlog.pending, (state) => {
+        .addCase(createblog.pending, (state) => {
             state.isLoading = true;
         })
-        .addCase(creatBlog.fulfilled, (state, action) => {
+        .addCase(createblog.fulfilled, (state, action) => {
             state.isLoading = false;
             state.isError = false;
             state.isSucess = true;
             state.createdblog = action.payload;
 
         })
-        .addCase(creatBlog.rejected, (state, action) => {
+        .addCase(createblog.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSucess = false;
@@ -124,10 +130,26 @@ export const blogSlice = createSlice({
             state.isError = false;
             state.isSucess = true;
             state.blogData = action.payload;
-            state.blogImage = action.payload.image;
+            state.blogImage = action.payload.image
 
         })
         .addCase(fetchBlog.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSucess = false;
+            state.message = action.error;
+        }) 
+        .addCase(updateBlog.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(updateBlog.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSucess = true;
+            state.updatedBlogs = action.payload;
+
+        })
+        .addCase(updateBlog.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSucess = false;

@@ -4,10 +4,10 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { getblogCategory } from '../features/blogs/blogCategorySlice';
-import {creatBlog, fetchBlog, resetState} from "../features/blogs/blogSlice";
+import { createblog, fetchBlog, resetState, updateBlog} from "../features/blogs/blogSlice";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { deleteImage, imageUpload } from '../features/uploadImages/uploadimageSlice';
+import { deleteImage, imageUpload, resetimgState } from '../features/uploadImages/uploadimageSlice';
 import Dropzone from 'react-dropzone'
 import { toast } from 'react-toastify';
 import {IoMdCloseCircleOutline} from "react-icons/io"
@@ -20,25 +20,24 @@ function Addblog() {
   const location = useLocation() 
   const navigate = useNavigate()
   const images = [];
-  const Newimages = ["Arun"];
+  const fetchimages = [];
   const blogstate = useSelector((state) => state.blogCategory.blogcategory)
   const imageState = useSelector((state)=> state.imageupload.images)
   const blog = useSelector((state) => state.blogs)
-  const {isSucess, isError, isLoading, createdblog, blogData, blogImage} = blog
+  const {isSucess, isError, isLoading, createdblog, blogData, blogImage } = blog
 
   const blogId = location.pathname.split('/')[3]
 
   useEffect(() => {
     if(blogId !== undefined) {
       dispatch(fetchBlog(blogId))
-      images.push(blogImage)
+      imagereupload();
     } else {
       dispatch(resetState())
     }
   }, [blogId])
 
-  console.log(images);
-
+  console.log(fetchimages);
     // Yup validation
  let schema = Yup.object().shape({
   tittle: Yup.string().required("Please enter tittle for the Blog"),
@@ -47,6 +46,13 @@ function Addblog() {
   image : Yup.array()
  });
 
+
+ const imagereupload = () => {
+  fetchimages.push( {
+    public_id : blogImage?.public_id,
+    url : blogImage?.url
+  })
+ }
  // Implymenting formik
 const formik = useFormik({
   enableReinitialize : true,
@@ -54,16 +60,27 @@ const formik = useFormik({
     tittle: blogData?.tittle || "",
     category : blogData?.category || "",
     description : blogData?.description || '',
-    image : []
+    image : [] 
   },
   validationSchema : schema,
   onSubmit: (values) => { 
-    dispatch(creatBlog(values))
-    formik.handleReset();
-    setTimeout(() => {
-      dispatch(resetState())
-      window.location.reload()
-    },250)
+    if(blogId !== undefined) {
+      dispatch(updateBlog({id: blogId, data: values}))
+      setTimeout(()=> {
+        navigate("/admin/blogs")
+        dispatch(resetState())
+        dispatch(resetimgState())
+      }, 100)
+    } else {
+      alert(JSON.stringify(values))
+      dispatch(createblog(values))
+      formik.handleReset();
+      setTimeout(() => {
+        dispatch(resetState())
+        dispatch(resetimgState())
+        window.location.reload()
+      },250)
+    }
   },
 });
 
@@ -91,10 +108,11 @@ useEffect(()=> {
      }) 
   });
 
+
     // For color change and image upload
   useEffect(()=> {
-    formik.values.image = images
-  }, [])
+    formik.values.image = images && fetchimages
+  }, [images])
   
     
   return (
@@ -157,7 +175,7 @@ useEffect(()=> {
                   </div>
                  {/* Image displaying */}
                  <div className='p-2 relative mt-2 flex flex-wrap gap-2'>
-                    {imageState?.map((image, index) => {
+                    {images?.map((image, index) => {
                       return (
                         <div key={index} className='relative w-[150px] group h-[150px] border border-gray-100 rounded-md'>
                           <img src={image.url} className='object-contain  w-[150px] h-[150px]' /> 
@@ -170,7 +188,21 @@ useEffect(()=> {
                           </button>
                         </div>
                       )
-                    })}
+                    }) }
+                    {/* {blogData?.image.map((image, index) => {
+                      return (
+                        <div key={index} className='relative w-[150px] group h-[150px] border border-gray-100 rounded-md'>
+                          <img src={image.url} className='object-contain  w-[150px] h-[150px]' /> 
+                          <button 
+                            type='button' 
+                            onClick={()=> dispatch(deleteImage(image.public_id))}
+                            className='absolute top-1 right-1'
+                          >
+                            <IoMdCloseCircleOutline className=' w-5 h-5 group-hover:opacity-100 hover:scale-105 opacity-0 group '/>
+                          </button>
+                        </div>
+                      )
+                    }) } */}
                   </div>
                  {/* Description Part */}
                   <label for="Select category" className='mt-2 font-medium'>Blog Content area</label>
