@@ -21,6 +21,7 @@ function Addblog() {
   const navigate = useNavigate()
   const images = [];
   const oldImages = []
+  const [imgdlt, setimgdlt] = useState(false)
   const blogstate = useSelector((state) => state.blogCategory.blogcategory)
   const imageState = useSelector((state)=> state.imageupload.images)
   const blog = useSelector((state) => state.blogs)
@@ -45,8 +46,6 @@ function Addblog() {
   image : Yup.array()
  });
 
-
- console.log(images);
  // Implymenting formik
 const formik = useFormik({
   enableReinitialize : true,
@@ -54,7 +53,7 @@ const formik = useFormik({
     tittle: blogData?.tittle || "",
     category : blogData?.category || "",
     description : blogData?.description || '',
-    image : ""
+    image : []
   },
   validationSchema : schema,
   onSubmit: (values) => { 
@@ -109,14 +108,19 @@ useEffect(()=> {
       url : image.url
      }) 
   })
- console.log(images)
-  console.log(oldImages);
 
     // For color change and image upload
   useEffect(()=> {
     formik.values.image = images 
   }, [images])
   
+  if(imgdlt !== false) {
+    formik.values.image = []
+  }
+  const handleClick = (data) => {
+    dispatch(deleteImage(data))
+    setimgdlt(true)
+  }
 
     
   return (
@@ -185,7 +189,7 @@ useEffect(()=> {
                           <img src={image.url} className='object-contain  w-[150px] h-[150px]' /> 
                           <button 
                             type='button' 
-                            onClick={()=> dispatch(deleteImage(image.public_id))}
+                            onClick={() => handleClick(image.public_id)}
                             className='absolute top-1 right-1'
                           >
                             <IoMdCloseCircleOutline className=' w-5 h-5 group-hover:opacity-100 hover:scale-105 opacity-0 group '/>
