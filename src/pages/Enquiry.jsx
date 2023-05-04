@@ -3,7 +3,7 @@ import {  Table } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteenquiry, getenquiry } from '../features/enquiry/enquirySlice';
 import { Link } from 'react-router-dom';
-import {FiEdit} from 'react-icons/fi'
+import {FaEye} from 'react-icons/fa'
 import {AiOutlineDelete} from 'react-icons/ai'
 import CustomModal from '../components/CustomModal';
 
@@ -91,8 +91,8 @@ function Enquiry() {
                 ),
                 action : (
                   <div className='flex flex-row space-x-2'>
-                    <Link to="/">
-                      <FiEdit className='w-5 h-5'/>
+                    <Link to={`/admin/enquiry/${enquirystate[i]._id}`}>
+                      <FaEye className='w-5 h-5'/>
                     </Link>
                     <button onClick={()=> handleClick(enquirystate[i]._id)}>
                       <AiOutlineDelete className='w-[22px] h-[22px] hover:text-blue-600'/>
