@@ -1,14 +1,17 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {  Table } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { getenquiry } from '../features/enquiry/enquirySlice';
+import { deleteenquiry, getenquiry } from '../features/enquiry/enquirySlice';
 import { Link } from 'react-router-dom';
 import {FiEdit} from 'react-icons/fi'
 import {AiOutlineDelete} from 'react-icons/ai'
+import CustomModal from '../components/CustomModal';
 
 
 
 function Enquiry() {
+  const [open, setOpen] = useState(false);
+  const [enqid, setenqid] = useState("")
 
     const columns = [
         {
@@ -44,15 +47,33 @@ function Enquiry() {
         
     ]
 
+    const showModal = () => {
+      setOpen(true);
+    };
+    const hideModal = () => {
+      setOpen(false);
+    };
+
     const dispatch = useDispatch()
 
     useEffect(()=> {
       dispatch(getenquiry())
     }, [])
 
-    const enquirystate = useSelector((state) => state.enquiry.enquiry)
+    const deleteFunc = (id) => {
+      dispatch(deleteenquiry(id))
+      setTimeout(() => {
+        dispatch(getenquiry())
+        setOpen(false)
+      }, 100);
+  }
+    const handleClick = (data) => {
+      setenqid(data)
+      setOpen(true)
+    }
 
-    console.log(enquirystate);
+
+    const enquirystate = useSelector((state) => state.enquiry.enquiry)
 
     const tabledata = []
         for(let i = 0; i<enquirystate.length ; i++) {
@@ -73,9 +94,9 @@ function Enquiry() {
                     <Link to="/">
                       <FiEdit className='w-5 h-5'/>
                     </Link>
-                    <Link to="/">
-                      <AiOutlineDelete className='w-[22px] h-[22px]'/>
-                    </Link>
+                    <button onClick={()=> handleClick(enquirystate[i]._id)}>
+                      <AiOutlineDelete className='w-[22px] h-[22px] hover:text-blue-600'/>
+                    </button>
                   </div>
                 )
             })
@@ -86,8 +107,8 @@ function Enquiry() {
         <h2 className='font-bold text-xl tracking-wide px-3 py-2 '>Enquiry Details</h2>
         <div className='px-2 py-2 '>
             <Table columns={columns} dataSource={tabledata} tableLayout/>
-
         </div>
+        <CustomModal  title="Delete" open={open} action={()=> deleteFunc(enqid)}  hideModal={hideModal} content="Are you sure? You want to  delete this Enquiry" />
     </div>
    </>
   )

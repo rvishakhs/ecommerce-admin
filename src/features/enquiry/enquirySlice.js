@@ -13,9 +13,21 @@ const initialState = {
     message : ""
 }
 
+// Function for getting all enquries
 export const getenquiry = createAsyncThunk("enquiry/getenquiry", async (thunkAPI)=>{
     try {
          return await enquiryService.getEnquiry()
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err)
+
+    }
+})
+
+// Function for deleting single enquiry
+
+export const deleteenquiry = createAsyncThunk("enquiry/deleteenquiry", async (values, thunkAPI)=>{
+    try {
+         return await enquiryService.deleteEnquiry(values)
     } catch (err) {
         return thunkAPI.rejectWithValue(err)
 
@@ -40,6 +52,22 @@ export const enquirySlice = createSlice({
 
         })
         .addCase(getenquiry.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.isSucess = false;
+            state.message = action.error;
+        }) 
+        .addCase(deleteenquiry.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(deleteenquiry.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.isError = false;
+            state.isSucess = true;
+            state.deletedEnquiry = action.payload;
+
+        })
+        .addCase(deleteenquiry.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
             state.isSucess = false;
