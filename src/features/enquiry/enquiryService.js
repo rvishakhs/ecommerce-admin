@@ -17,6 +17,15 @@ const getEnquiry = async ( ) => {
     return response.data;
 }  
 
+// For getting single enquiry
+
+const getsingleEnquiry = async (id) => {
+    const response = await axios.get(`${base_Url}enquire/${id}`);
+    
+    return response.data;
+}  
+
+
 // For Deleting single enquiry
 
 const deleteEnquiry = async (id) => {
@@ -25,9 +34,12 @@ const deleteEnquiry = async (id) => {
     return response.data;
 }  
 
+
+
 const enquiryService = {
     getEnquiry,
     deleteEnquiry,
+    getsingleEnquiry,
 }
 
 export default enquiryService 
