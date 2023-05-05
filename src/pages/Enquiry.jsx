@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {  Table } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteenquiry, getenquiry } from '../features/enquiry/enquirySlice';
+import { deleteenquiry, getenquiry, updateenquiry } from '../features/enquiry/enquirySlice';
 import { Link } from 'react-router-dom';
 import {FaEye} from 'react-icons/fa'
 import {AiOutlineDelete} from 'react-icons/ai'
@@ -72,6 +72,10 @@ function Enquiry() {
       setOpen(true)
     }
 
+    const setStatus = (data, id) => {
+      dispatch(updateenquiry({id: id, data: data}))
+    }
+
 
     const enquirystate = useSelector((state) => state.enquiry.enquiry)
 
@@ -84,8 +88,18 @@ function Enquiry() {
                 mobile : enquirystate[i].mobile,
                 status : (
                   <>
-                    <select name='' className='form-control form-select' id>
-                      <option value="">Set Status</option>
+                    <select 
+                      name='' 
+                      className='form-control form-select' 
+                      id=""
+                      value={enquirystate[i].enqStatus}
+                      defaultValue={enquirystate[i].enqStatus ? enquirystate[i].enqStatus : "Submitted"}
+                      onChange={(e) => setStatus(e.target.value, enquirystate[i]._id)}
+                    >
+                        <option value="Submitted"  >Submitted</option>
+                        <option value="Reviewing"  >Reviewing</option>
+                        <option value="In Progress"  >In Progress</option>
+                        <option value="Resolved"  >Resolved</option>
                     </select>
                   </>
                 ),

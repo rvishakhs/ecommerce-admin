@@ -25,6 +25,15 @@ const getsingleEnquiry = async (id) => {
     return response.data;
 }  
 
+// For updating enquiry Status
+
+const updateEnquiry = async (enq) => {
+    const response = await axios.put(`${base_Url}enquire/${enq.id}`, {enqStatus : enq.data} ,config);
+    
+    return response.data;
+}  
+
+
 
 // For Deleting single enquiry
 
@@ -40,6 +49,7 @@ const enquiryService = {
     getEnquiry,
     deleteEnquiry,
     getsingleEnquiry,
+    updateEnquiry,
 }
 
 export default enquiryService 

@@ -21,6 +21,7 @@ const createcoupon = async (coupon) => {
     return response.data;
 }  
 
+
 // fetch single coupon
 const fetchcoupon = async (id) => {
     const response = await axios.get(`${base_Url}coupon/${id}`,);
