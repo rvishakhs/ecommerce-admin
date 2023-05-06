@@ -63,7 +63,7 @@ export const ordersSlice = createSlice({
             state.isLoading = false;
             state.isError = false;
             state.isSucess = true;
-            state.userOrder = action.payload;
+            state.orderDetails = action.payload;
 
         })
         .addCase(getUserOrders.rejected, (state, action) => {

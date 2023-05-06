@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {IoMdArrowBack} from "react-icons/io"
 import {  Table } from 'antd';
+import { getUserOrders } from '../features/Order/OrderSlice';
 
 const ViewOrder = () => {
 
@@ -10,10 +11,13 @@ const ViewOrder = () => {
     const navigate = useNavigate()
     const location = useLocation();
 
-    const orderstate = useSelector((state) => state.orders.allOrders)
+    const userOrder = useSelector((state) => state.orders)
+
+    const {orderDetails} = userOrder
 
     const userid = location.pathname.split("/")[3]
 
+    console.log(orderDetails);
 
     const backClick = () => {
         navigate(-1)
@@ -21,7 +25,7 @@ const ViewOrder = () => {
 
 
     useEffect(() => {
-        dispatch(getUserOrders())
+        dispatch(getUserOrders(userid))
     }, [])
     const columns = [
         {
@@ -30,60 +34,47 @@ const ViewOrder = () => {
           key: 'slno',
         },
         {
-          title: 'OrderId',
-          dataIndex: 'orderId',
-          key: 'orderId',
+          title: 'Products',
+          dataIndex: 'products',
+          key: 'products',
         },
         {
-          title: 'Name',
-          dataIndex: 'name',
-          key: 'name',
+          title: 'Brand',
+          dataIndex: 'brand',
+          key: 'brand',
+        },
+        {
+          title: 'Qty',
+          dataIndex: 'Qty',
+          key: 'Qty',
+        },
+        {
+          title: 'Price',
+          dataIndex: 'Price',
+          key: 'Price',
+        },
+        {
+          title: 'Color',
+          dataIndex: 'Color',
+          key: 'Color',
         },
         {
           title: 'Status',
           dataIndex: 'status',
           key: 'Status',
         },
-        {
-          title: 'Method',
-          dataIndex: 'method',
-          key: 'method',
-        },
-        {
-          title: 'Amount',
-          dataIndex: 'amount',
-          key: 'amount',
-        },
-        {
-          title: 'OrderCreated',
-          dataIndex: 'orderCreated',
-          key: 'orderCreated',
-        },
-        {
-          title: 'Action',
-          dataIndex: 'action',
-          key: 'action',
-        },
+        
     ]
     const tabledata = []
-    for(let i = 0; i<orderstate.length ; i++) {
+    for(let i = 0; i<orderDetails?.products.length ; i++) {
         tabledata.push({
             key: i + 1,
-            orderId : orderstate[i].paymentIntent.id,
-            name : orderstate[i].orderBy.firstname,
-            status : orderstate[i].orderStatus,
-            method: orderstate[i].paymentIntent.method,
-            amount: orderstate[i].paymentIntent.amount,
-            orderCreated : new Date(orderstate[i].createdAt).toLocaleString(),
-            action : (
-              <div className='flex flex-row space-x-2 hover:text-blue-300 hover:scale-105'>
-                  <Link to={`/admin/orders/${orderstate[i].orderBy._id}`}>
-                      View Order
-                  </Link>
-                  
-              </div>
-            )
-
+            products : orderDetails.products[i].product.tittle,
+            brand : orderDetails.products[i].product.brand,
+            Qty : orderDetails.products[i].count,
+            Price : orderDetails.products[i].price,
+            Color : orderDetails.products[i].color,
+            Status : orderDetails?.paymentIntent.status
         })
     }
 

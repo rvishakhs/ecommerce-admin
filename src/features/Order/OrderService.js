@@ -18,7 +18,7 @@ const getAllOrders = async ( ) => {
 // Route for fetching order by user
 
 const getOrderByUser = async (id) => {
-    const response = await axios.post(`${base_Url}user/getorderbyuser/${id}`, config); 
+    const response = await axios.post(`${base_Url}user/getorderbyuser/${id}`, " " ,config); 
     return response.data;
 }  
 
