@@ -16,6 +16,11 @@ function Orderlist() {
           key: 'slno',
         },
         {
+          title: 'OrderId',
+          dataIndex: 'orderId',
+          key: 'orderId',
+        },
+        {
           title: 'Name',
           dataIndex: 'name',
           key: 'name',
@@ -26,14 +31,14 @@ function Orderlist() {
           key: 'Status',
         },
         {
-          title: 'Products',
-          dataIndex: 'products',
-          key: 'Products',
+          title: 'Method',
+          dataIndex: 'method',
+          key: 'method',
         },
         {
-          title: 'OrderId',
-          dataIndex: 'orderId',
-          key: 'orderId',
+          title: 'Amount',
+          dataIndex: 'amount',
+          key: 'amount',
         },
         {
           title: 'OrderCreated',
@@ -59,25 +64,19 @@ function Orderlist() {
         for(let i = 0; i<orderstate.length ; i++) {
             tabledata.push({
                 key: i + 1,
+                orderId : orderstate[i].paymentIntent.id,
                 name : orderstate[i].orderBy.firstname,
                 status : orderstate[i].orderStatus,
-                products : orderstate[i].products.map((item, index) => {
-                  return (
-                    <>
-                        <p>{item.product.tittle}</p>
-                    </>
-                  )
-                }),
-                orderId : orderstate[i]._id,
+                method: orderstate[i].paymentIntent.method,
+                amount: orderstate[i].paymentIntent.amount,
                 orderCreated : new Date(orderstate[i].createdAt).toLocaleString(),
                 action : (
-                  <div className='flex flex-row space-x-2'>
-                    <Link to="/">
+                  <div className='flex flex-row space-x-2 hover:text-blue-300 hover:scale-105'>
                       <FiEdit className='w-5 h-5'/>
-                    </Link>
-                    <Link to="/">
-                      <AiOutlineDelete className='w-[22px] h-[22px]'/>
-                    </Link>
+                      <Link to={`/admin/orders/${orderstate[i]._id}`}>
+                          View Order
+                      </Link>
+                      
                   </div>
                 )
 

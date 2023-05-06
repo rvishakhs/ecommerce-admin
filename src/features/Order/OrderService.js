@@ -9,15 +9,23 @@ const config = {
         'Accept'       : 'application/json'
        }
 }
-
+// For fetching single all orders
 const getAllOrders = async ( ) => {
     const response = await axios.get(`${base_Url}user/allorders`, config); 
     return response.data;
 }  
 
+// Route for fetching order by user
+
+const getOrderByUser = async (id) => {
+    const response = await axios.post(`${base_Url}user/getorderbyuser/${id}`, config); 
+    return response.data;
+}  
+
 
 const orderService = {
-    getAllOrders
+    getAllOrders,
+    getOrderByUser
 }
 
 export default orderService 
